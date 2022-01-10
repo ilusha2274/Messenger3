@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Messenger</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <colorMenu th:insert="blocks/colorMenu :: colorMenu"></colorMenu>
+</head>
+
+
+
+<body style = "background-color: #1e1d2f">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2 gy-3">
+            <blockMenu th:insert="blocks/blockMenu :: blockMenu"></blockMenu>
+        </div>
+
+        <div class="col-lg-7 gy-3" style="background-color: #1e1d2f">
+            <form method="post">
+                <div class="form-floating mb-3">
+                    <input type="text" name="nameChat" class="form-control rounded-4" id="nameChat">
+                    <label for="nameChat">Name Chat</label>
+                </div>
+                <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Create new group chat</button>
+            <form>
+
+        </div>
+
+
+
+        <div class="col-lg-3 gy-3 p-0" style="height : 96vh; background-color: #1e1d2f">
+            <div class="overflow-auto p-3 mb-3 mb-md-2 mr-md-3 bg-light" style=" height : 90vh;">
+
+                <div class="px-2 py-3 chat-box bg-white h-100">
+
+                    <tr th:each="printFriend : ${printFriends}">
+                        <td th:insert="blocks/blockFriendsCheckBox :: blockFriendsCheckBox"></td>
+                    </tr>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

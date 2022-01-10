@@ -1,0 +1,13 @@
+<div th:fragment="blockReceiverMessage" xmlns:th="http://www.thymeleaf.org">
+
+    <div class="media w-50 ml-auto col-md-3 offset-md-6 row align-items-end">
+        <div class="media-body">
+            <input class = "messageId" type="hidden" th:attr="value=${printMessage.messageId}">
+            <div class="bg-primary rounded py-2 px-3 mb-2 ">
+                <p class="text-small mb-0 text-white text-right" th:text ="${printMessage.message}"></p>
+            </div>
+            <p id="date" class="small text-muted" th:text ="${printMessage.date}"></p>
+        </div>
+    </div>
+
+</div>

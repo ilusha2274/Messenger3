@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Messenger</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <colorMenu th:insert="blocks/colorMenu :: colorMenu"></colorMenu>
+</head>
+
+<body style = "background-color: #1e1d2f">
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-lg-2 gy-3">
+            <blockMenu th:insert="blocks/blockMenu :: blockMenu"></blockMenu>
+        </div>
+
+        <!-- Users box-->
+        <div class="col-lg-3 gy-3 p-0" style="height : 96vh; background-color: #1e1d2f">
+
+            <nav class="navbar navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand">Search</a>
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </nav>
+
+            <div class="overflow-auto p-3 mb-3 mb-md-2 mr-md-3 bg-light" style=" height : 90vh;">
+
+                <div class="px-2 py-3 chat-box bg-white h-100">
+
+                    <tr th:each="printFriend : ${printFriends}">
+                        <td th:insert="blocks/blockFriends :: blockFriends"></td>
+                    </tr>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7 gy-3"  style="height : 96vh; background-color: #1e1d2f">
+            <form method="post">
+                <div class="form-floating mb-3">
+                    <input type="text" name="email" class="form-control rounded-4" id="email" placeholder="name@example.com">
+                    <label for="email">Email address</label>
+                </div>
+                <div>
+                    <p style="color:#ff0000" th:text="${exception}"></p>
+                </div>
+                <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Add User</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

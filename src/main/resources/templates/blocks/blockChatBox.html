@@ -1,0 +1,30 @@
+<div th:fragment="blockChatBox" xmlns:th="http://www.thymeleaf.org">
+
+    <div id="messages2" class="overflow-auto p-3 mb-3 mb-md-2 mr-md-3 bg-light " style="height : 87vh;">
+
+        <div id="messages" class="px-2 py-3 chat-box bg-white 100vh container d-flex flex-column-reverse">
+
+                <th:block th:each="printMessage : ${printMessages}">
+                    <div th:if="${printMessage.author}" th:include="blocks/blockReceiverMessage :: blockReceiverMessage"></div>
+                    <div th:unless="${printMessage.author}" th:include="blocks/blockSenderMessage :: blockSenderMessage"></div>
+                </th:block>
+
+        </div>
+
+    </div>
+    <!-- Typing area -->
+    <form  class="bg-light">
+        <input id = "chatID" type="hidden" th:attr="value=${chatID}">
+        <input id = "name" type="hidden" th:attr="value=${name}">
+        <input id = "userId" type="hidden" th:attr="value=${userId}">
+        <div class="input-group">
+            <input type="text" id ="message" name="message" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
+            <div class="input-group-append">
+                <button id="send" class="btn btn-default" type="button">Send</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+

@@ -16,4 +16,4 @@ jobs:
       - run: echo "${{ secrets.key }}" > "$HOME/.ssh/key"
       - run: chmod 600 "$HOME/.ssh/key"
       # Deploy
-      - run: ssh root@178.208.92.181 "pgrep java | xargs kill -9; nohup java -jar ~/messenger3/Messenger3.0-0.0.1-SNAPSHOT.jar > ~/messenger3/log.txt &"
+      - run: ssh -o StrictHostKeyChecking=no root@178.208.92.181 "pgrep java | xargs kill -9; nohup java -jar ~/messenger3/Messenger3.0-0.0.1-SNAPSHOT.jar > ~/messenger3/log.txt &"

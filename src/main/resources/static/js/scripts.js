@@ -15,6 +15,14 @@ $(document).ready(function() {
 
 });
 
+$(document).keydown(function(e){
+    $('#message').keydown(function(e){
+        if(e.which == 13){
+           sendMessage();
+        }
+    });
+});
+
 function connect() {
     let socket = new SockJS('/our-websocket');
     stompClient = Stomp.over(socket);
@@ -26,30 +34,23 @@ function connect() {
         });
 
     });
-//    arr = document.querySelectorAll('#messageId');
-//    if (arr.length > 0){
-//        messageId = arr[arr.length - 1].value;
-//        addListenerOnLastElement(arr);
-//    }
-    $('#messages2').scrollTop(921);
-    let messages2 = document.getElementById('messages2');
-    messages2.addEventListener('scroll', function() {
-                      let messages2 = document.getElementById('messages2');
-                      if(messages2.scrollTop <=250 && scrollEvent){
-                        scrollEvent = false;
-                        load();
-                      }
-                    });
+
+    $('#messages2').scrollTop($('#messages2')[0].scrollHeight);
+    $('#messages2').on('scroll', function() {
+        if($('#messages2').scrollTop() <=250 && scrollEvent){
+            scrollEvent = false;
+            load();
+        }
+    });
 }
 
 function showMessage(message) {
     console.log('Got message: ' + message.content);
     let userId = document.querySelector('#userId');
     if (userId.value == message.userId){
-    let date = document.getElementById('date');
-    date.innerHTML = message.time;
+    $("#date1").html(message.time);
     }else{
-    $("#messages").append(" <div class= \"media w-50 mb-3\"> " +
+    $("#messages").prepend(" <div class= \"media w-50 mb-3\"> " +
         " <div class= \"media-body ml-3\"> " +
         " <h6> " + message.nameAuthor + " </h6> "  +
         " <div class= \"bg-light rounded py-2 px-3 mb-2\"> " +
@@ -80,19 +81,16 @@ function sendMessage() {
 
 function showMessageAuthor(message) {
     console.log('Got message: ' + message.content);
-    $("#messages").append(" <div class= \"media w-50 ml-auto col-md-3 offset-md-6\"> " +
+    $("#messages").prepend(" <div class= \"media w-50 ml-auto col-md-3 offset-md-6\"> " +
     " <div class= \"media-body\"> " +
     " <div class= \"bg-primary rounded py-2 px-3 mb-2\"> " +
     " <p class= \"text-small mb-0 text-white text-right\"> " + message.content + " </p> " +
     " </div> " +
-    "<p id=\"date\" class=\"small text-muted\">" + "---" + "</p>" +
+    " <p id= \"date1\" class=\"small text-muted\"> " + "---" + " </p> " +
     " </div> " +
     " </div> ");
+    $('#messages2').scrollTop($('#messages2')[0].scrollHeight);
 }
-
-//function addListenerOnLastElement(array){
-//    array[array.length -1].parentNode.addEventListener("mouseover", load);
-//}
 
 function printNext20Message(message) {
 
@@ -103,7 +101,7 @@ function printNext20Message(message) {
         " <div class= \"bg-primary rounded py-2 px-3 mb-2\"> " +
         " <p class= \"text-small mb-0 text-white text-right\"> " + message.message + " </p> " +
         " </div> " +
-        "<p id=\"date\" class=\"small text-muted\">" + message.date + "</p>" +
+        " <p id=\"date\" class=\"small text-muted\">" + message.date + "</p>" +
         " </div> " +
         " </div> ");
     }else{
@@ -121,10 +119,7 @@ function printNext20Message(message) {
 }
 
 function load(){
-//    arr[arr.length -1].parentNode.removeEventListener("mouseover", load);
-//    arr = document.querySelectorAll('#messageId');
     messageId = $('.messageId').last()[0].value;
-//    messageId = arr[arr.length - 1].value;
     let xhr = new XMLHttpRequest();
     let chatID = document.querySelector('#chatID').value;
     let url = "http://localhost:8080/chat/" + chatID + "/" + messageId;
@@ -138,6 +133,8 @@ function load(){
                 printNext20Message(jsonResponse[i])
             }
             scrollEvent = true;
+        }else{
+            $('#messages2').off('scroll');
         }
     };
     xhr.send();

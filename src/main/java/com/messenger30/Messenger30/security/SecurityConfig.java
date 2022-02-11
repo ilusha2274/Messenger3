@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/home", "/profile", "/chat", "/newmessage", "/settings", "/addUserGroupChat").authenticated()
-                .antMatchers(HttpMethod.GET, "/registration", "/js").permitAll()
+                .antMatchers(HttpMethod.GET, "/registration", "/static/**").permitAll()
                 .and()
                 .formLogin().loginPage("/login").usernameParameter("email").permitAll()
                 .defaultSuccessUrl("/home")

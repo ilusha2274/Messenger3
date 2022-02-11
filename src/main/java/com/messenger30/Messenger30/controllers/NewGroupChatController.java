@@ -37,14 +37,16 @@ public class NewGroupChatController {
         return "newgroupchat";
     }
 
-    @PostMapping("/newmessage")
-    public String newMessage(@RequestParam(value = "idChecked", required = false) List<String> nameFriend, String nameChat, @AuthenticationPrincipal User user, Model model) {
+    @PostMapping("/newgroupchat")
+    public String newMessage(@RequestParam(value = "idChecked", required = false) List<String> nameFriend , String nameChat, @AuthenticationPrincipal User user, Model model) {
 
         Chat newChat = chatRepository.addGroupChat(nameChat, "group", user);
 
-        for (String s : nameFriend) {
-            User newUser = new User(Integer.parseInt(s));
-            chatRepository.addUserToGroupChat(newUser, newChat);
+        if (nameFriend != null){
+            for (String s : nameFriend) {
+                User newUser = new User(Integer.parseInt(s));
+                chatRepository.addUserToGroupChat(newUser, newChat);
+            }
         }
 
         model.addAttribute("activePage", "CHAT");

@@ -17,7 +17,8 @@ $(document).ready(function() {
 
 $(document).keydown(function(e){
     $('#message').keydown(function(e){
-        if(e.which == 13){
+        let messageContent = document.querySelector('#message');
+        if(e.which == 13 && messageContent.value != ''){
            sendMessage();
         }
     });

@@ -1,5 +1,6 @@
 package com.messenger30.Messenger30.controllers;
 
+import com.amazonaws.services.s3.model.transform.Unmarshallers;
 import com.messenger30.Messenger30.helper.PrintMessage;
 import com.messenger30.Messenger30.repository.Chat;
 import com.messenger30.Messenger30.repository.ChatRepository;
@@ -19,7 +20,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -90,33 +97,47 @@ public class ChatController {
 
     @MessageMapping("/chat/{id}")
     //@SendTo("/queue/messages/chat/{id}")
-    public void sendMessage(@Payload ChatMessage chatMessage, @DestinationVariable Integer id, UsernamePasswordAuthenticationToken authenticationToken ) {
+    public void sendMessage(@Payload ChatMessage chatMessage, @DestinationVariable Integer id,
+                            UsernamePasswordAuthenticationToken authenticationToken ) {
 
-        //int id = chatMessage.getIdChat();
         User user = (User) authenticationToken.getPrincipal();
-
         boolean result = chatRepository.findUserInChat(id,user);
-        if (result){
-            user.setName(chatMessage.getNameAuthor());
-            Message newMessage = chatRepository.addMessageToChat(chatMessage.getContent(), user, id);
-            String date = newMessage.getLocalDateTime().format(dateTimeFormatterTime) + " | " +
-                    newMessage.getLocalDateTime().format(dateTimeFormatterDate);
 
-            ChatMessage chatMessage2 = new ChatMessage();
-            chatMessage2.setContent(HtmlUtils.htmlEscape(chatMessage.getContent()));
-            chatMessage2.setNameAuthor(HtmlUtils.htmlEscape(chatMessage.getNameAuthor()));
-            chatMessage2.setTime(HtmlUtils.htmlEscape(date));
-            chatMessage2.setUserId(chatMessage.getUserId());
-
-            List<User> users = chatRepository.findListUserInChat(id);
-            for (User value : users) {
-                simpMessagingTemplate.convertAndSendToUser(value.getEmail(), "/queue/messages/chat/" + id, chatMessage2);
+        if(result){
+            if (chatMessage.isHaveFile()){
+                sendMessageFile(chatMessage,id,user);
+            }else {
+                sendMessageNoFile(chatMessage,id,user);
             }
         }
 
+    }
 
-        //simpMessagingTemplate.convertAndSend("/queue/messages/chat/" + id, chatMessage2);
+    private void sendMessageNoFile (ChatMessage chatMessage, Integer id, User user){
+        user.setName(chatMessage.getNameAuthor());
+        Message newMessage = chatRepository.addMessageToChat(chatMessage.getContent(), user, id);
+        String date = newMessage.getLocalDateTime().format(dateTimeFormatterTime) + " | " +
+                newMessage.getLocalDateTime().format(dateTimeFormatterDate);
 
+        ChatMessage chatMessage2 = new ChatMessage();
+        chatMessage2.setContent(HtmlUtils.htmlEscape(chatMessage.getContent()));
+        chatMessage2.setNameAuthor(HtmlUtils.htmlEscape(chatMessage.getNameAuthor()));
+        chatMessage2.setTime(HtmlUtils.htmlEscape(date));
+        chatMessage2.setUserId(chatMessage.getUserId());
+
+        List<User> users = chatRepository.findListUserInChat(id);
+        for (User value : users) {
+            simpMessagingTemplate.convertAndSendToUser(value.getEmail(), "/queue/messages/chat/" + id, chatMessage2);
+        }
+    }
+
+    private void sendMessageFile (ChatMessage chatMessage, Integer id, User user){
+        try {
+            InputStream inputStream = new FileInputStream(chatMessage.getFile());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println();
     }
 
     private ArrayList<PrintMessage> printMessages(List<Message> messages, User user) {

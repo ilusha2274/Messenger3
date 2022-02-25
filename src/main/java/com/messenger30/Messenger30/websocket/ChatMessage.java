@@ -1,11 +1,16 @@
 package com.messenger30.Messenger30.websocket;
 
+import java.io.File;
+import java.io.InputStream;
+
 public class ChatMessage {
+    private boolean haveFile;
     private String content;
     private String time;
     private String nameAuthor;
     private Integer idChat;
     private Integer userId;
+    private File file;
 
     public ChatMessage() {
     }
@@ -16,11 +21,38 @@ public class ChatMessage {
         this.nameAuthor = nameAuthor;
     }
 
-    public ChatMessage(String nameAuthor,Integer userId, String content,Integer idChat) {
+    public ChatMessage(String nameAuthor,Integer userId, String content,Integer idChat,boolean haveFile) {
         this.content = content;
         this.nameAuthor = nameAuthor;
         this.userId = userId;
         this.idChat = idChat;
+        this.haveFile = haveFile;
+    }
+
+    public ChatMessage(String nameAuthor,Integer userId, String content,Integer idChat,
+                       boolean haveFile,File file) {
+        this.content = content;
+        this.nameAuthor = nameAuthor;
+        this.userId = userId;
+        this.idChat = idChat;
+        this.haveFile = haveFile;
+        this.file = file;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public boolean isHaveFile() {
+        return haveFile;
+    }
+
+    public void setHaveFile(boolean haveFile) {
+        this.haveFile = haveFile;
     }
 
     public Integer getIdChat() {

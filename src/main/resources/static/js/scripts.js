@@ -2,6 +2,10 @@ let stompClient = null;
 let arr = null;
 let messageId = null;
 let scrollEvent = true;
+let files = [];
+const preview = document.createElement('div');
+
+preview.classList.add('preview');
 
 $(document).ready(function() {
     let chatID = document.querySelector('#chatID');
@@ -12,8 +16,62 @@ $(document).ready(function() {
     $("#send").click(function() {
         sendMessage();
     });
-
+    $("#file").on('change', changeHandler);
+    $("#open").on('click', function() {
+        $("#file").click();
+    });
+    preview.addEventListener('click',removeHandler);
 });
+
+const removeHandler = event =>{
+    if (!event.target.dataset.name) {
+          return
+    }
+
+    const {name} = event.target.dataset
+    files = files.filter(file => file.name !== name)
+
+    const block = preview.querySelector(`[data-name="${name}"]`).closest('.preview-image')
+    block.remove()
+}
+
+const changeHandler = event => {
+    if(!event.target.files.length){
+        return;
+    }
+
+    preview.innerHTML = '';
+
+    const message = document.getElementById("message");
+    message.insertAdjacentElement('afterend', preview);
+
+    files = Array.from(event.target.files);
+    const reader = new FileReader();
+
+    reader.onload = ev => {
+        const src = ev.target.result;
+        preview.insertAdjacentHTML('afterbegin', `
+            <div class="preview-image">
+            <div class="preview-remove" style="width: 20px; height: 20px; position: absolute;top: 0;font-weight: bold;cursor: pointer;background: rgba(255, 255, 255, .5);display: flex;align-items: center;justify-content: center;" data-name="${files[0].name}">&times;</div>
+                <img style="width: auto; height: 70px" src="${src}"/>
+                <div class="preview-info" style="height: 25px; position: absolute;bottom: 0;font-size: .8rem;background: rgba(255, 255, 255, .5);display: flex;align-items: center;justify-content: space-between;padding: 0 5px;">
+                    ${bytesToSize(files[0].size)}
+                </div>
+            </div>
+        `)
+    }
+
+    reader.readAsDataURL(files[0]);
+}
+
+function bytesToSize(bytes) {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+  if (!bytes) {
+    return '0 Byte'
+  }
+  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)))
+  return Math.round(bytes / Math.pow(1024, i)) + ' ' + sizes[i]
+}
 
 $(document).keydown(function(e){
     $('#message').keydown(function(e){
@@ -54,7 +112,7 @@ function showMessage(message) {
     $("#messages").prepend(" <div class= \"media w-50 mb-3\"> " +
         " <div class= \"media-body ml-3\"> " +
         " <h6> " + message.nameAuthor + " </h6> "  +
-        " <div class= \"bg-light rounded py-2 px-3 mb-2\"> " +
+        " <div class= \"bg-light rounded py-2 px-3 mb-2\" style=\"inline-size: 510px; overflow-wrap: break-word;\"> " +
         " <p class= \"text-small mb-0 text-muted\"> " + message.content + " </p> " +
         " </div> " +
         " <p class=\"small text-muted\"> " + message.time + " </p> " +
@@ -63,28 +121,55 @@ function showMessage(message) {
     }
 }
 
+function fileUpload(file) {
+    const reader = new FileReader();
+        reader.onload = ev => {
+            const src = ev.target.result;
+            let chatID = document.querySelector('#chatID');
+            let nameAuthor = document.querySelector('#name');
+            let userId = document.querySelector('#userId');
+            let chatMessage = {
+                nameAuthor: nameAuthor.value,
+                userId: userId.value,
+                content: src,
+                idChat: chatID.value,
+                haveFile: true,
+                file: files[0]
+            };
+//            showMessageAuthor(chatMessage);
+//            let res = JSON.stringify(chatMessage);
+            stompClient.send("/ws/chat/" + chatID.value, {}, JSON.stringify(chatMessage));
+        }
+        reader.readAsDataURL(file);
+}
+
 function sendMessage() {
-    let chatID = document.querySelector('#chatID');
-    let messageContent = document.querySelector('#message');
-    let nameAuthor = document.querySelector('#name');
-    let userId = document.querySelector('#userId');
-    let chatMessage = {
-    nameAuthor: nameAuthor.value,
-    userId: userId.value,
-    content: messageContent.value,
-    idChat: chatID.value
-    };
-    showMessageAuthor(chatMessage);
-    stompClient.send("/ws/chat/" + chatID.value, {}, JSON.stringify(chatMessage));
-    console.log('Got post message: ' + messageContent.value );
-    messageContent.value = '';
+    if (files[0] != null){
+        fileUpload(files[0]);
+    }else{
+        let chatID = document.querySelector('#chatID');
+        let messageContent = document.querySelector('#message');
+        let nameAuthor = document.querySelector('#name');
+        let userId = document.querySelector('#userId');
+        let chatMessage = {
+            nameAuthor: nameAuthor.value,
+            userId: userId.value,
+            content: messageContent.value,
+            idChat: chatID.value,
+            haveFile: false
+        };
+        showMessageAuthor(chatMessage);
+        stompClient.send("/ws/chat/" + chatID.value, {}, JSON.stringify(chatMessage));
+        console.log('Got post message: ' + messageContent.value );
+        messageContent.value = '';
+    }
 }
 
 function showMessageAuthor(message) {
     console.log('Got message: ' + message.content);
     $("#messages").prepend(" <div class= \"media w-50 ml-auto col-md-3 offset-md-6\"> " +
     " <div class= \"media-body\"> " +
-    " <div class= \"bg-primary rounded py-2 px-3 mb-2\"> " +
+    " <div class= \"bg-primary rounded py-2 px-3 mb-2\" style=\"inline-size: 510px; overflow-wrap: break-word;\"> " +
     " <p class= \"text-small mb-0 text-white text-right\"> " + message.content + " </p> " +
     " </div> " +
     " <p id= \"date1\" class=\"small text-muted\"> " + "---" + " </p> " +

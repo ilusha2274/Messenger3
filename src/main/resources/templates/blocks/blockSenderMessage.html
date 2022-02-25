@@ -5,7 +5,7 @@
 
             <input class = "messageId" type="hidden" th:attr="value=${printMessage.messageId}">
             <h6 th:text ="${printMessage.nameAuthor}"></h6>
-            <div class="bg-light rounded py-2 px-3 mb-2">
+            <div class="bg-light rounded py-2 px-3 mb-2" style="inline-size: 510px; overflow-wrap: break-word;">
                 <p class="text-small mb-0 text-muted" th:text ="${printMessage.message}"></p>
             </div>
             <p id="date" class="small text-muted" th:text ="${printMessage.date}"></p>

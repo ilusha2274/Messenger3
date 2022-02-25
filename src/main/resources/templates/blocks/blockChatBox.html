@@ -19,8 +19,10 @@
         <input id = "userId" type="hidden" th:attr="value=${userId}">
         <div class="input-group">
             <input type="text" id ="message" name="message" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
+            <input type="file" id="file" style="display:none">
             <div class="input-group-append">
-                <button id="send" class="btn btn-default" type="button">Send</button>
+                <button id="send" class="btn btn-outline-success" type="button">Send</button>
+                <button id="open" class="btn btn-outline-primary" type="button">open file</button>
             </div>
         </div>
     </div>

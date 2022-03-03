@@ -1,15 +1,8 @@
 <div th:fragment="blockSenderMessage" xmlns:th="http://www.thymeleaf.org">
 
-    <div class="media w-50 mb-3">
-        <div class="media-body ml-3">
-
-            <input class = "messageId" type="hidden" th:attr="value=${printMessage.messageId}">
-            <h6 th:text ="${printMessage.nameAuthor}"></h6>
-            <div class="bg-light rounded py-2 px-3 mb-2" style="inline-size: 510px; overflow-wrap: break-word;">
-                <p class="text-small mb-0 text-muted" th:text ="${printMessage.message}"></p>
-            </div>
-            <p id="date" class="small text-muted" th:text ="${printMessage.date}"></p>
-        </div>
-    </div>
+        <input class = "messageId" type="hidden" th:attr="value=${printMessage.messageId}">
+        <p class="sender-message-author" th:text ="${printMessage.nameAuthor}"></p>
+        <p class="sender-message" th:text ="${printMessage.message}"></p>
+        <p id="date" class="sender-message-date" th:text ="${printMessage.date}"></p>
 
 </div>

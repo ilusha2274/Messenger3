@@ -1,6 +1,7 @@
 package com.messenger30.Messenger30.controllers;
 
 import com.amazonaws.services.s3.model.transform.Unmarshallers;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.messenger30.Messenger30.helper.PrintMessage;
 import com.messenger30.Messenger30.repository.Chat;
 import com.messenger30.Messenger30.repository.ChatRepository;
@@ -18,7 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.HtmlUtils;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.regions.Regions;
@@ -26,6 +29,7 @@ import com.amazonaws.services.s3.AmazonS3;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -131,12 +135,20 @@ public class ChatController {
         }
     }
 
+    @MessageMapping("/chat2/{id}")
+    public @ResponseBody
+    void storeAd(@RequestPart("ad") String adString, @RequestPart("file") MultipartFile file) throws IOException {
+
+        Advertisement jsonAd = new ObjectMapper().readValue(adString, Advertisement.class);
+    }
+
     private void sendMessageFile (ChatMessage chatMessage, Integer id, User user){
-        try {
-            InputStream inputStream = new FileInputStream(chatMessage.getFile());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            InputStream inputStream = new FileInputStream(chatMessage.getFile());
+
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
         System.out.println();
     }
 

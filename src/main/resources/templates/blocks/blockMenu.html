@@ -1,38 +1,35 @@
 <div th:fragment="blockMenu" xmlns:th="http://www.thymeleaf.org">
-    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style=" height : 96vh; width: 295px;">
-        <a href="/home" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-            <span class="fs-4">Messenger</span>
-        </a>
+    <div class="block-menu">
+        <div class="logo-border">
+            <a href="/home" class="logo-text">Messenger</a>
+        </div>
         <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                <a href="/profile" class="nav-link" th:classappend="${activePage == 'PROFILE' ? 'active' : ''}">Profile</a>
-            </li>
-            <li class="nav-item">
-                <a href="/friends" class="nav-link" th:classappend="${activePage == 'FRIENDS' ? 'active' : ''}">Friends</a>
-            </li>
-            <li class="nav-item">
-                <a href="/chat" class="nav-link" th:classappend="${activePage == 'CHAT' ? 'active' : ''}">Chat</a>
-            </li>
-            <li class="nav-item">
-                <a href="/newgroupchat" class="nav-link" th:classappend="${activePage == 'NEWGROUPCHAT' ? 'active' : ''}">New group chat</a>
-            </li>
-            <li class="nav-item">
-                <a href="/addUserGroupChat" class="nav-link" th:classappend="${activePage == 'ADDUSERGROUPCHAT' ? 'active' : ''}">Add USER in GC</a>
-            </li>
-            <li class="nav-item">
-                <a href="/settings" class="nav-link" th:classappend="${activePage == 'SETTINGS' ? 'active' : ''}">Settings</a>
-            </li>
-            <li class="nav-item">
-                <a href="/exit" class="nav-link">exit</a>
-            </li>
-        </ul>
+            <div class="header-block">
+                <a href="/profile" th:class="${activePage == 'PROFILE'} ? header-active : header">Profile</a>
+            </div>
+            <div class="header-block">
+                <a href="/friends" th:class="${activePage == 'FRIENDS'} ? header-active : header">Friends</a>
+            </div>
+            <div class="header-block">
+                <a href="/chat" th:class="${activePage == 'CHAT'} ? header-active : header">Chat</a>
+            </div>
+            <div class="header-block">
+                <a href="/newgroupchat" th:class="${activePage == 'NEWGROUPCHAT'} ? header-active : header">New group chat</a>
+            </div>
+            <div class="header-block">
+                <a href="/addUserGroupChat" th:class="${activePage == 'ADDUSERGROUPCHAT'} ? header-active : header">Add USER in GC</a>
+            </div>
+            <div class="header-block">
+                <a href="/settings" th:class="${activePage == 'SETTINGS'} ? header-active : header">Settings</a>
+            </div>
+            <div class="header-block">
+                <a href="/exit" class="header">exit</a>
+            </div>
         <hr>
 
+        <hr style="width: 180px; position: absolute; bottom: 55px; right:10px;">
         <div class="dropdown">
-            <a href="" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true">
-                <strong th:text="${title}"></strong>
+            <a href="/profile" class="name-user" th:text="${title}">
             </a>
         </div>
     </div>

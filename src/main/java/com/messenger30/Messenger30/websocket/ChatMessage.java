@@ -10,7 +10,7 @@ public class ChatMessage {
     private String nameAuthor;
     private Integer idChat;
     private Integer userId;
-    private File file;
+//    private File file;
 
     public ChatMessage() {
     }
@@ -29,23 +29,23 @@ public class ChatMessage {
         this.haveFile = haveFile;
     }
 
-    public ChatMessage(String nameAuthor,Integer userId, String content,Integer idChat,
-                       boolean haveFile,File file) {
-        this.content = content;
-        this.nameAuthor = nameAuthor;
-        this.userId = userId;
-        this.idChat = idChat;
-        this.haveFile = haveFile;
-        this.file = file;
-    }
+//    public ChatMessage(String nameAuthor,Integer userId, String content,Integer idChat,
+//                       boolean haveFile,File file) {
+//        this.content = content;
+//        this.nameAuthor = nameAuthor;
+//        this.userId = userId;
+//        this.idChat = idChat;
+//        this.haveFile = haveFile;
+//        this.file = file;
+//    }
 
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
+//    public File getFile() {
+//        return file;
+//    }
+//
+//    public void setFile(File file) {
+//        this.file = file;
+//    }
 
     public boolean isHaveFile() {
         return haveFile;

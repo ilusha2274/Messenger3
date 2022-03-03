@@ -1,18 +1,12 @@
 <div th:fragment="blockChat" xmlns:th="http://www.thymeleaf.org">
 
-    <div method="post">
-        <a th:href="@{/chat/}+${printChat.chatId}"
-           class="list-group-item list-group-item-action list-group-item-light rounded-0">
-            <div class="media">
-                <div class="media-body ml-4">
-                    <div class="d-flex align-items-center justify-content-between mb-1">
-                        <h6 class="mb-0" th:text="${printChat.nameChat}"></h6>
-                        <small class="small font-weight-bold" th:text="${printChat.dateLastMessage}"></small>
-                    </div>
-                    <p class="font-italic mb-0 text-small" th:text="${printChat.textLastMessage}"></p>
-                </div>
-            </div>
+    <form class="chat-block" method="post">
+        <a th:href="@{/chat/}+${printChat.chatId}" class="chat">
+            <p class="name-chat" th:text="${printChat.nameChat}"></p>
+            <p class="last-message" th:text="${printChat.textLastMessage}"></p>
+            <p class="date-last-message" th:text="${printChat.dateLastMessage}"></p>
         </a>
-    </div>
+    </form>
+    <hr style="margin: 0;">
 
 </div>

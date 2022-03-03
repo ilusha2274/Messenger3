@@ -52,7 +52,7 @@ const changeHandler = event => {
         const src = ev.target.result;
         preview.insertAdjacentHTML('afterbegin', `
             <div class="preview-image">
-            <div class="preview-remove" style="width: 20px; height: 20px; position: absolute;top: 0;font-weight: bold;cursor: pointer;background: rgba(255, 255, 255, .5);display: flex;align-items: center;justify-content: center;" data-name="${files[0].name}">&times;</div>
+            <div class="preview-remove"  data-name="${files[0].name}">&times;</div>
                 <img style="width: auto; height: 70px" src="${src}"/>
                 <div class="preview-info" style="height: 25px; position: absolute;bottom: 0;font-size: .8rem;background: rgba(255, 255, 255, .5);display: flex;align-items: center;justify-content: space-between;padding: 0 5px;">
                     ${bytesToSize(files[0].size)}
@@ -122,25 +122,32 @@ function showMessage(message) {
 }
 
 function fileUpload(file) {
+    let chatMessage;
     const reader = new FileReader();
         reader.onload = ev => {
             const src = ev.target.result;
             let chatID = document.querySelector('#chatID');
             let nameAuthor = document.querySelector('#name');
             let userId = document.querySelector('#userId');
-            let chatMessage = {
+            chatMessage = {
                 nameAuthor: nameAuthor.value,
                 userId: userId.value,
                 content: src,
                 idChat: chatID.value,
-                haveFile: true,
-                file: files[0]
+                haveFile: true
             };
-//            showMessageAuthor(chatMessage);
-//            let res = JSON.stringify(chatMessage);
-            stompClient.send("/ws/chat/" + chatID.value, {}, JSON.stringify(chatMessage));
         }
         reader.readAsDataURL(file);
+        var formData = new FormData();
+        formData.append("file", files[0]);
+        formData.append('ad', new Blob(JSON.stringify(chatMessage), {
+                        type: "application/json"
+                    }));
+
+//            showMessageAuthor(chatMessage);
+//            let res = JSON.stringify(chatMessage);
+        stompClient.send("/ws/chat2/" + chatID.value, {}, JSON.stringify(formData));
+//        stompClient.send("/ws/chat2/" + chatID.value, {}, JSON.stringify(chatMessage));
 }
 
 function sendMessage() {

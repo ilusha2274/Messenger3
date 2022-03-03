@@ -38,7 +38,7 @@ public class FriendsController {
     }
 
     @PostMapping("/friends")
-    public String addNewFriends(Model model, @AuthenticationPrincipal User user, String email) {
+    public String addNewFriends2(Model model, @AuthenticationPrincipal User user, String email) {
 
         User user2 = userRepository.findUserByEmail(email);
 
@@ -49,6 +49,8 @@ public class FriendsController {
             addFriend(user, user2);
             model.addAttribute("activePage", "FRIENDS");
         }
+        List<PrintFriend> printFriends = userRepository.findListFriendsByUser(user);
+        model.addAttribute("printFriends", printFriends);
         model.addAttribute("title", user.getName());
         return "friends";
 

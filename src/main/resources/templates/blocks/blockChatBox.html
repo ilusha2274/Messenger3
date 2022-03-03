@@ -1,31 +1,80 @@
 <div th:fragment="blockChatBox" xmlns:th="http://www.thymeleaf.org">
 
-    <div id="messages2" class="overflow-auto p-3 mb-3 mb-md-2 mr-md-3 bg-light " style="height : 87vh;">
-
-        <div id="messages" class="px-2 py-3 chat-box bg-white 100vh container d-flex flex-column-reverse">
-
-                <th:block th:each="printMessage : ${printMessages}">
-                    <div th:if="${printMessage.author}" th:include="blocks/blockReceiverMessage :: blockReceiverMessage"></div>
-                    <div th:unless="${printMessage.author}" th:include="blocks/blockSenderMessage :: blockSenderMessage"></div>
-                </th:block>
-
-        </div>
-
-    </div>
-    <!-- Typing area -->
-    <div  class="bg-light">
-        <input id = "chatID" type="hidden" th:attr="value=${chatID}">
-        <input id = "name" type="hidden" th:attr="value=${name}">
-        <input id = "userId" type="hidden" th:attr="value=${userId}">
-        <div class="input-group">
-            <input type="text" id ="message" name="message" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
-            <input type="file" id="file" style="display:none">
-            <div class="input-group-append">
-                <button id="send" class="btn btn-outline-success" type="button">Send</button>
-                <button id="open" class="btn btn-outline-primary" type="button">open file</button>
+    <div class="chat-box">
+        <!--верхняя панель-->
+        <nav>
+            <div class="form-search">
+                <svg class="trash-can-icon-naw">
+                    <use xlink:href="#trash-can"></use>
+                </svg>
+                <input class="input-search" placeholder="Search">
+                <svg class="search-icon">
+                    <use xlink:href="#search"></use>
+                </svg>
             </div>
+        </nav>
+
+        <hr>
+
+        <!--область вывода сообщений-->
+        <div class="chat-box-message">
+            <th:block th:each="printMessage : ${printMessages}">
+                <div class="block-message" th:if="${printMessage.author}" th:include="blocks/blockReceiverMessage :: blockReceiverMessage"></div>
+                <div class="block-message" th:unless="${printMessage.author}" th:include="blocks/blockSenderMessage :: blockSenderMessage"></div>
+            </th:block>
+        </div>
+
+        <hr style="margin: 5px;">
+
+        <!--поле для ввода сообщения-->
+        <div class="typing-area-border">
+            <input id = "chatID" type="hidden" th:attr="value=${chatID}">
+            <input id = "name" type="hidden" th:attr="value=${name}">
+            <input id = "userId" type="hidden" th:attr="value=${userId}">
+
+<!--            <button id="send" class="btn btn-outline-success" type="button">send</button>-->
+<!--            <button id="open" class="btn btn-outline-primary" type="button">open file</button>-->
+            <a onclick="#file" id="open">
+                <svg class="clip-icon">
+                    <use xlink:href="#clip"></use>
+                </svg>
+            </a>
+            <input type="text" id ="message" name="message" placeholder="Type a message" class="input-message">
+            <input class="file-button" type="file" id="file">
+            <a>
+                <svg class="send-message-icon">
+                    <use xlink:href="#send-message"></use>
+                </svg>
+            </a>
         </div>
     </div>
+
+<!--    <div id="messages2" class="overflow-auto p-3 mb-3 mb-md-2 mr-md-3 bg-light " style="height : 87vh;">-->
+
+<!--        <div id="messages" class="px-2 py-3 chat-box bg-white 100vh container d-flex flex-column-reverse">-->
+
+<!--                <th:block th:each="printMessage : ${printMessages}">-->
+<!--                    <div th:if="${printMessage.author}" th:include="blocks/blockReceiverMessage :: blockReceiverMessage"></div>-->
+<!--                    <div th:unless="${printMessage.author}" th:include="blocks/blockSenderMessage :: blockSenderMessage"></div>-->
+<!--                </th:block>-->
+
+<!--        </div>-->
+
+<!--    </div>-->
+<!--    &lt;!&ndash; Typing area &ndash;&gt;-->
+<!--    <div  class="bg-light">-->
+<!--        <input id = "chatID" type="hidden" th:attr="value=${chatID}">-->
+<!--        <input id = "name" type="hidden" th:attr="value=${name}">-->
+<!--        <input id = "userId" type="hidden" th:attr="value=${userId}">-->
+<!--        <div class="input-group">-->
+<!--            <input type="text" id ="message" name="message" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">-->
+<!--            <input class="file-button" type="file" id="file">-->
+<!--            <div class="input-group-append">-->
+<!--                <button id="send" class="btn btn-outline-success" type="button">send</button>-->
+<!--                <button id="open" class="btn btn-outline-primary" type="button">open file</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 </div>
 
 

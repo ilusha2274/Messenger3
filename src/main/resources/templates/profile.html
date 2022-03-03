@@ -3,17 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Messenger</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <colorMenu th:insert="blocks/colorMenu :: colorMenu"></colorMenu>
+    <link rel="stylesheet" href="/static/js/style.css">
 </head>
 
-<body style = "background-color: #1e1d2f">
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-2 gy-3">
-            <blockMenu th:insert="blocks/blockMenu :: blockMenu"></blockMenu>
-        </div>
-    </div>
+<body>
+<div class="block-menu-border">
+    <blockMenu th:include="blocks/blockMenu :: blockMenu"></blockMenu>
 </div>
 </body>
 

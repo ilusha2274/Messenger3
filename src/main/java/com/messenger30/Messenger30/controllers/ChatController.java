@@ -120,8 +120,8 @@ public class ChatController {
     private void sendMessageNoFile (ChatMessage chatMessage, Integer id, User user){
         user.setName(chatMessage.getNameAuthor());
         Message newMessage = chatRepository.addMessageToChat(chatMessage.getContent(), user, id);
-        String date = newMessage.getLocalDateTime().format(dateTimeFormatterTime) + " | " +
-                newMessage.getLocalDateTime().format(dateTimeFormatterDate);
+        String date = newMessage.getLocalDateTime().format(dateTimeFormatterTime);
+//                + " | " + newMessage.getLocalDateTime().format(dateTimeFormatterDate);
 
         ChatMessage chatMessage2 = new ChatMessage();
         chatMessage2.setContent(HtmlUtils.htmlEscape(chatMessage.getContent()));

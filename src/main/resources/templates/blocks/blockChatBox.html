@@ -1,6 +1,6 @@
 <div th:fragment="blockChatBox" xmlns:th="http://www.thymeleaf.org">
 
-    <div id="messages2" class="chat-box">
+    <div class="chat-box">
         <!--верхняя панель-->
         <nav>
             <div class="form-search">
@@ -17,7 +17,7 @@
         <hr>
 
         <!--область вывода сообщений-->
-        <div class="chat-box-message">
+        <div id="messages" class="chat-box-message">
             <th:block th:each="printMessage : ${printMessages}">
                 <div align="right" class="block-message" th:if="${printMessage.author}" th:include="blocks/blockReceiverMessage :: blockReceiverMessage"></div>
                 <div class="block-message" th:unless="${printMessage.author}" th:include="blocks/blockSenderMessage :: blockSenderMessage"></div>

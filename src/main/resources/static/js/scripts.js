@@ -94,9 +94,9 @@ function connect() {
 
     });
 
-    $('#messages2').scrollTop($('#messages2')[0].scrollHeight);
-    $('#messages2').on('scroll', function() {
-        if($('#messages2').scrollTop() <=250 && scrollEvent){
+    $('#messages').scrollTop($('#messages')[0].scrollHeight);
+    $('#messages').on('scroll', function() {
+        if($('#messages').scrollTop() <=250 && scrollEvent){
             scrollEvent = false;
             load();
         }
@@ -110,12 +110,12 @@ function showMessage(message) {
     $("#date").html(message.time);
     }else{
     $("#messages").prepend(" <div class=\"block-message\"> " +
-        " <div class=\"block-message-sender\"> " +
-        " <p class=\"sender-message\" " + message.content + " </p> " +
-        " <p class=\"sender-message-author\"> " + message.nameAuthor + " </p> " +
-        " <p id=\"date\" class=\"sender-message-date\" " + message.time + " </p> " +
-        " </div> " +
-        " </div> ");
+         " <div class=\"block-message-sender\"> " +
+         " <p class=\"sender-message\"> " + message.content + " </p> " +
+         " <p class=\"sender-message-author\"> " + message.nameAuthor + " </p> " +
+         " <p id=\"date\" class=\"sender-message-date\"> " + message.time + " </p> " +
+         " </div> " +
+         " </div> ");
     }
 }
 
@@ -172,33 +172,33 @@ function sendMessage() {
 
 function showMessageAuthor(message) {
     console.log('Got message: ' + message.content);
-    $("#messages").prepend(" <div class=\"block-message\"> " +
+    $("#messages").prepend(" <div align=\"right\" class=\"block-message\"> " +
        " <div class=\"block-message-receiver\"> " +
-       " <p class=\"receiver-message\" " + message.content + " </p> " +
-       " <p id=\"date\" class=\"receiver-message-date\" " + message.time + " </p> " +
+       " <p class=\"receiver-message\"> " + message.content + " </p> " +
+       " <p id=\"date\" class=\"receiver-message-date\"> " + message.time + " </p> " +
        " </div> " +
        " </div> ");
 
-    $('#messages2').scrollTop($('#messages2')[0].scrollHeight);
+    $('#messages').scrollTop($('#messages')[0].scrollHeight);
 }
 
 function printNext20Message(message) {
 
     if (message.author){
-    $("#messages").append(" <div class=\"block-message\"> " +
+    $("#messages").append(" <div align=\"right\" class=\"block-message\"> " +
          " <div class=\"block-message-receiver\"> " +
-         " <input class = \"messageId\" type=\"hidden\" " + message.messageId + " </input> " +
-         " <p class=\"receiver-message\" " + message.content + " </p> " +
-         " <p id=\"date\" class=\"receiver-message-date\" " + message.time + " </p> " +
+         " <input class = \"messageId\" type=\"hidden\" value=\"" + message.messageId + "\"> " +
+         " <p class=\"receiver-message\"> " + message.message + " </p> " +
+         " <p id=\"date\" class=\"receiver-message-date\"> " + message.date + " </p> " +
          " </div> " +
          " </div> ");
     }else{
     $("#messages").append(" <div class=\"block-message\"> " +
           " <div class=\"block-message-sender\"> " +
-          " <input class = \"messageId\" type=\"hidden\" " + message.messageId + " </input> " +
-          " <p class=\"sender-message\" " + message.content + " </p> " +
+          " <input class = \"messageId\" type=\"hidden\" value=\"" + message.messageId + "\"> " +
+          " <p class=\"sender-message\"> " + message.message + " </p> " +
           " <p class=\"sender-message-author\"> " + message.nameAuthor + " </p> " +
-          " <p id=\"date\" class=\"sender-message-date\" " + message.time + " </p> " +
+          " <p id=\"date\" class=\"sender-message-date\"> " + message.date + " </p> " +
           " </div> " +
           " </div> ");
     }
@@ -220,7 +220,7 @@ function load(){
             }
             scrollEvent = true;
         }else{
-            $('#messages2').off('scroll');
+            $('#messages').off('scroll');
         }
     };
     xhr.send();

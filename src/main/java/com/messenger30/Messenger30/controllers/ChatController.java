@@ -135,12 +135,12 @@ public class ChatController {
         }
     }
 
-    @MessageMapping("/chat2/{id}")
-    public @ResponseBody
-    void storeAd(@RequestPart("ad") String adString, @RequestPart("file") MultipartFile file) throws IOException {
-
-        Advertisement jsonAd = new ObjectMapper().readValue(adString, Advertisement.class);
-    }
+//    @MessageMapping("/chat2/{id}")
+//    public @ResponseBody
+//    void storeAd(@RequestPart("ad") String adString, @RequestPart("file") MultipartFile file) throws IOException {
+//
+//        Advertisement jsonAd = new ObjectMapper().readValue(adString, Advertisement.class);
+//    }
 
     private void sendMessageFile (ChatMessage chatMessage, Integer id, User user){
 //        try {

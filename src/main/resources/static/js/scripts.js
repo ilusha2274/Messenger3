@@ -107,15 +107,13 @@ function showMessage(message) {
     console.log('Got message: ' + message.content);
     let userId = document.querySelector('#userId');
     if (userId.value == message.userId){
-    $("#date1").html(message.time);
+    $("#date").html(message.time);
     }else{
-    $("#messages").prepend(" <div class= \"media w-50 mb-3\"> " +
-        " <div class= \"media-body ml-3\"> " +
-        " <h6> " + message.nameAuthor + " </h6> "  +
-        " <div class= \"bg-light rounded py-2 px-3 mb-2\" style=\"inline-size: 510px; overflow-wrap: break-word;\"> " +
-        " <p class= \"text-small mb-0 text-muted\"> " + message.content + " </p> " +
-        " </div> " +
-        " <p class=\"small text-muted\"> " + message.time + " </p> " +
+    $("#messages").prepend(" <div class=\"block-message\"> " +
+        " <div class=\"block-message-sender\"> " +
+        " <p class=\"sender-message\" " + message.content + " </p> " +
+        " <p class=\"sender-message-author\"> " + message.nameAuthor + " </p> " +
+        " <p id=\"date\" class=\"sender-message-date\" " + message.time + " </p> " +
         " </div> " +
         " </div> ");
     }
@@ -174,40 +172,35 @@ function sendMessage() {
 
 function showMessageAuthor(message) {
     console.log('Got message: ' + message.content);
-    $("#messages").prepend(" <div class= \"media w-50 ml-auto col-md-3 offset-md-6\"> " +
-    " <div class= \"media-body\"> " +
-    " <div class= \"bg-primary rounded py-2 px-3 mb-2\" style=\"inline-size: 510px; overflow-wrap: break-word;\"> " +
-    " <p class= \"text-small mb-0 text-white text-right\"> " + message.content + " </p> " +
-    " </div> " +
-    " <p id= \"date1\" class=\"small text-muted\"> " + "---" + " </p> " +
-    " </div> " +
-    " </div> ");
+    $("#messages").prepend(" <div class=\"block-message\"> " +
+       " <div class=\"block-message-receiver\"> " +
+       " <p class=\"receiver-message\" " + message.content + " </p> " +
+       " <p id=\"date\" class=\"receiver-message-date\" " + message.time + " </p> " +
+       " </div> " +
+       " </div> ");
+
     $('#messages2').scrollTop($('#messages2')[0].scrollHeight);
 }
 
 function printNext20Message(message) {
 
     if (message.author){
-    $("#messages").append(" <div class= \"media w-50 ml-auto col-md-3 offset-md-6\"> " +
-        " <div class= \"media-body\"> " +
-        " <input class = \"messageId\" type=\"hidden\" value=\"" + message.messageId + "\"> " +
-        " <div class= \"bg-primary rounded py-2 px-3 mb-2\"> " +
-        " <p class= \"text-small mb-0 text-white text-right\"> " + message.message + " </p> " +
-        " </div> " +
-        " <p id=\"date\" class=\"small text-muted\">" + message.date + "</p>" +
-        " </div> " +
-        " </div> ");
+    $("#messages").append(" <div class=\"block-message\"> " +
+         " <div class=\"block-message-receiver\"> " +
+         " <input class = \"messageId\" type=\"hidden\" " + message.messageId + " </input> " +
+         " <p class=\"receiver-message\" " + message.content + " </p> " +
+         " <p id=\"date\" class=\"receiver-message-date\" " + message.time + " </p> " +
+         " </div> " +
+         " </div> ");
     }else{
-    $("#messages").append(" <div class= \"media w-50 mb-3\"> " +
-        " <div class= \"media-body ml-3\"> " +
-        " <input class = \"messageId\" type=\"hidden\" value=\"" + message.messageId + "\"> " +
-        " <h6> " + message.nameAuthor + " </h6> "  +
-        " <div class= \"bg-light rounded py-2 px-3 mb-2\"> " +
-        " <p class= \"text-small mb-0 text-muted\"> " + message.message + " </p> " +
-        " </div> " +
-        " <p class=\"small text-muted\"> " + message.date + " </p> " +
-        " </div> " +
-        " </div> ");
+    $("#messages").append(" <div class=\"block-message\"> " +
+          " <div class=\"block-message-sender\"> " +
+          " <input class = \"messageId\" type=\"hidden\" " + message.messageId + " </input> " +
+          " <p class=\"sender-message\" " + message.content + " </p> " +
+          " <p class=\"sender-message-author\"> " + message.nameAuthor + " </p> " +
+          " <p id=\"date\" class=\"sender-message-date\" " + message.time + " </p> " +
+          " </div> " +
+          " </div> ");
     }
 }
 

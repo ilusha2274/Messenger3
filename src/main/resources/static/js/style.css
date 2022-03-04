@@ -505,6 +505,8 @@ ul {
     border-radius: 15px;
     overflow-y:auto;
     overflow-x:hidden;
+    flex-direction: column-reverse!important;
+    display: flex!important;
 }
 
 .typing-area-border{

@@ -1,8 +1,9 @@
 <div th:fragment="blockSenderMessage" xmlns:th="http://www.thymeleaf.org">
 
-        <input class = "messageId" type="hidden" th:attr="value=${printMessage.messageId}">
-        <p class="sender-message-author" th:text ="${printMessage.nameAuthor}"></p>
-        <p class="sender-message" th:text ="${printMessage.message}"></p>
-        <p id="date" class="sender-message-date" th:text ="${printMessage.date}"></p>
-
+        <div class="block-message-sender">
+                <input class = "messageId" type="hidden" th:attr="value=${printMessage.messageId}">
+                <p class="sender-message" th:text ="${printMessage.message}"></p>
+                <p class="sender-message-author" th:text ="${printMessage.nameAuthor}"></p>
+                <p id="date" class="sender-message-date" th:text ="${printMessage.date}"></p>
+        </div>
 </div>

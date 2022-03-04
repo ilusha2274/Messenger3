@@ -19,7 +19,7 @@
         <!--область вывода сообщений-->
         <div class="chat-box-message">
             <th:block th:each="printMessage : ${printMessages}">
-                <div class="block-message" th:if="${printMessage.author}" th:include="blocks/blockReceiverMessage :: blockReceiverMessage"></div>
+                <div align="right" class="block-message" th:if="${printMessage.author}" th:include="blocks/blockReceiverMessage :: blockReceiverMessage"></div>
                 <div class="block-message" th:unless="${printMessage.author}" th:include="blocks/blockSenderMessage :: blockSenderMessage"></div>
             </th:block>
         </div>

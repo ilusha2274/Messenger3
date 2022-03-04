@@ -167,8 +167,8 @@ public class ChatController {
 
         PrintMessage printMessage;
 
-        String date = message.getLocalDateTime().format(dateTimeFormatterTime) + " | " +
-                message.getLocalDateTime().format(dateTimeFormatterDate);
+        String date = message.getLocalDateTime().format(dateTimeFormatterTime);
+//                + " | " + message.getLocalDateTime().format(dateTimeFormatterDate);
 
         if (message.getIdAuthor().equals(user.getId())) {
             printMessage = new PrintMessage(true, message.getText(), date, message.getNameAuthor(),message.getMessageId());

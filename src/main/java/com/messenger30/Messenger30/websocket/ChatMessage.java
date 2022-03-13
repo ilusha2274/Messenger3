@@ -1,5 +1,8 @@
 package com.messenger30.Messenger30.websocket;
 
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.InputStream;
 
@@ -10,7 +13,7 @@ public class ChatMessage {
     private String nameAuthor;
     private Integer idChat;
     private Integer userId;
-//    private File file;
+    private String nameFile;
 
     public ChatMessage() {
     }
@@ -27,6 +30,15 @@ public class ChatMessage {
         this.userId = userId;
         this.idChat = idChat;
         this.haveFile = haveFile;
+    }
+
+    public ChatMessage(String nameAuthor,Integer userId, String content,Integer idChat,boolean haveFile,String nameFile) {
+        this.content = content;
+        this.nameAuthor = nameAuthor;
+        this.userId = userId;
+        this.idChat = idChat;
+        this.haveFile = haveFile;
+        this.nameFile = nameFile;
     }
 
 //    public ChatMessage(String nameAuthor,Integer userId, String content,Integer idChat,
@@ -46,6 +58,15 @@ public class ChatMessage {
 //    public void setFile(File file) {
 //        this.file = file;
 //    }
+
+
+    public String getNameFile() {
+        return nameFile;
+    }
+
+    public void setNameFile(String nameFile) {
+        this.nameFile = nameFile;
+    }
 
     public boolean isHaveFile() {
         return haveFile;

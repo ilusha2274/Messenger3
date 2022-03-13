@@ -1,6 +1,10 @@
 package com.messenger30.Messenger30.controllers;
 
-import com.amazonaws.services.s3.model.transform.Unmarshallers;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.messenger30.Messenger30.helper.PrintMessage;
 import com.messenger30.Messenger30.repository.Chat;
@@ -8,6 +12,7 @@ import com.messenger30.Messenger30.repository.ChatRepository;
 import com.messenger30.Messenger30.repository.Message;
 import com.messenger30.Messenger30.repository.User;
 import com.messenger30.Messenger30.websocket.ChatMessage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -17,37 +22,35 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.HtmlUtils;
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Controller
 public class ChatController {
 
+    @Value("${upload.path}")
+    private String uploadPath;
+
+    @Value("${name.bucket}")
+    private String nameBucket;
+
+    private final AWSCredentials credentials;
     private final ChatRepository chatRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final DateTimeFormatter dateTimeFormatterTime = DateTimeFormatter.ofPattern("HH:mm");
     private final DateTimeFormatter dateTimeFormatterDate = DateTimeFormatter.ofPattern("dd MMM", Locale.ENGLISH);
 
-    public ChatController(ChatRepository chatRepository, SimpMessagingTemplate simpMessagingTemplate) {
+    public ChatController(ChatRepository chatRepository, SimpMessagingTemplate simpMessagingTemplate,AWSCredentials credentials) {
         this.chatRepository = chatRepository;
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.credentials = credentials;
     }
 
     @GetMapping("/chat")
@@ -102,54 +105,81 @@ public class ChatController {
     @MessageMapping("/chat/{id}")
     //@SendTo("/queue/messages/chat/{id}")
     public void sendMessage(@Payload ChatMessage chatMessage, @DestinationVariable Integer id,
-                            UsernamePasswordAuthenticationToken authenticationToken ) {
+                            UsernamePasswordAuthenticationToken authenticationToken) {
 
-        User user = (User) authenticationToken.getPrincipal();
-        boolean result = chatRepository.findUserInChat(id,user);
+        String urlFile = chatMessage.getNameFile().replaceAll("data:image/png;base64,", "");
+        InputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(urlFile));
 
-        if(result){
-            if (chatMessage.isHaveFile()){
-                sendMessageFile(chatMessage,id,user);
-            }else {
-                sendMessageNoFile(chatMessage,id,user);
-            }
+        ObjectMetadata metadata = null;
+        String nameFile = stringGeneration();
+        final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
+                        uploadPath,
+                        "ru-moscow")).build();
+        try {
+            s3.putObject(nameBucket, nameFile, inputStream,metadata);
+        } catch (AmazonServiceException e) {
+            System.err.println(e.getErrorMessage());
+            System.exit(1);
         }
 
-    }
-
-    private void sendMessageNoFile (ChatMessage chatMessage, Integer id, User user){
-        user.setName(chatMessage.getNameAuthor());
-        Message newMessage = chatRepository.addMessageToChat(chatMessage.getContent(), user, id);
-        String date = newMessage.getLocalDateTime().format(dateTimeFormatterTime);
-//                + " | " + newMessage.getLocalDateTime().format(dateTimeFormatterDate);
-
-        ChatMessage chatMessage2 = new ChatMessage();
-        chatMessage2.setContent(HtmlUtils.htmlEscape(chatMessage.getContent()));
-        chatMessage2.setNameAuthor(HtmlUtils.htmlEscape(chatMessage.getNameAuthor()));
-        chatMessage2.setTime(HtmlUtils.htmlEscape(date));
-        chatMessage2.setUserId(chatMessage.getUserId());
-
-        List<User> users = chatRepository.findListUserInChat(id);
-        for (User value : users) {
-            simpMessagingTemplate.convertAndSendToUser(value.getEmail(), "/queue/messages/chat/" + id, chatMessage2);
-        }
-    }
-
-//    @MessageMapping("/chat2/{id}")
-//    public @ResponseBody
-//    void storeAd(@RequestPart("ad") String adString, @RequestPart("file") MultipartFile file) throws IOException {
+//        User user = (User) authenticationToken.getPrincipal();
+//        boolean result = chatRepository.findUserInChat(id,user);
 //
-//        Advertisement jsonAd = new ObjectMapper().readValue(adString, Advertisement.class);
-//    }
-
-    private void sendMessageFile (ChatMessage chatMessage, Integer id, User user){
-//        try {
-//            InputStream inputStream = new FileInputStream(chatMessage.getFile());
-
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
+//        if(result){
+//            user.setName(chatMessage.getNameAuthor());
+//            Message newMessage = chatRepository.addMessageToChat(chatMessage.getContent(), user, id);
+//            String date = newMessage.getLocalDateTime().format(dateTimeFormatterTime);
+////                + " | " + newMessage.getLocalDateTime().format(dateTimeFormatterDate);
+//
+//            ChatMessage chatMessage2 = new ChatMessage();
+//            chatMessage2.setContent(HtmlUtils.htmlEscape(chatMessage.getContent()));
+//            chatMessage2.setNameAuthor(HtmlUtils.htmlEscape(chatMessage.getNameAuthor()));
+//            chatMessage2.setTime(HtmlUtils.htmlEscape(date));
+//            chatMessage2.setUserId(chatMessage.getUserId());
+//
+//            List<User> users = chatRepository.findListUserInChat(id);
+//            for (User value : users) {
+//                simpMessagingTemplate.convertAndSendToUser(value.getEmail(), "/queue/messages/chat/" + id, chatMessage2);
+//            }
 //        }
-        System.out.println();
+
+    }
+
+    @RequestMapping(value="/upload", method=RequestMethod.POST)
+    public void upload(@RequestPart("file") MultipartFile file,
+                       @RequestPart("chatMessage") ChatMessage chatMessage) {
+
+        InputStream inputStream = null;
+        ObjectMetadata metadata = null;
+        String nameFile = stringGeneration();
+        try {
+            inputStream = file.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
+                        uploadPath,
+                "ru-moscow")).build();
+        try {
+            s3.putObject(nameBucket, nameFile, inputStream,metadata);
+        } catch (AmazonServiceException e) {
+            System.err.println(e.getErrorMessage());
+            System.exit(1);
+        }
+    }
+
+    private String stringGeneration(){
+        String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i =0;i<12;i++){
+            int num = random.nextInt(62);
+            sb.append(str.charAt(num));
+        }
+        return sb.toString();
     }
 
     private ArrayList<PrintMessage> printMessages(List<Message> messages, User user) {

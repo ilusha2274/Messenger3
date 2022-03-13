@@ -24,10 +24,10 @@
             </th:block>
         </div>
 
-        <hr style="margin: 5px;">
+        <hr style="margin-top: 5px;">
 
         <!--поле для ввода сообщения-->
-        <div class="typing-area-border">
+        <form class="typing-area-border">
             <input id = "chatID" type="hidden" th:attr="value=${chatID}">
             <input id = "name" type="hidden" th:attr="value=${name}">
             <input id = "userId" type="hidden" th:attr="value=${userId}">
@@ -40,41 +40,15 @@
                 </svg>
             </a>
             <input type="text" id ="message" name="message" placeholder="Type a message" class="input-message">
-            <input class="file-button" type="file" id="file">
+            <input type="file" name="file" id="file" class="file-button">
             <a>
-                <svg class="send-message-icon">
+                <svg align="right" class="send-message-icon">
                     <use xlink:href="#send-message"></use>
                 </svg>
             </a>
-        </div>
+        </form>
     </div>
 
-<!--    <div id="messages2" class="overflow-auto p-3 mb-3 mb-md-2 mr-md-3 bg-light " style="height : 87vh;">-->
-
-<!--        <div id="messages" class="px-2 py-3 chat-box bg-white 100vh container d-flex flex-column-reverse">-->
-
-<!--                <th:block th:each="printMessage : ${printMessages}">-->
-<!--                    <div th:if="${printMessage.author}" th:include="blocks/blockReceiverMessage :: blockReceiverMessage"></div>-->
-<!--                    <div th:unless="${printMessage.author}" th:include="blocks/blockSenderMessage :: blockSenderMessage"></div>-->
-<!--                </th:block>-->
-
-<!--        </div>-->
-
-<!--    </div>-->
-<!--    &lt;!&ndash; Typing area &ndash;&gt;-->
-<!--    <div  class="bg-light">-->
-<!--        <input id = "chatID" type="hidden" th:attr="value=${chatID}">-->
-<!--        <input id = "name" type="hidden" th:attr="value=${name}">-->
-<!--        <input id = "userId" type="hidden" th:attr="value=${userId}">-->
-<!--        <div class="input-group">-->
-<!--            <input type="text" id ="message" name="message" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">-->
-<!--            <input class="file-button" type="file" id="file">-->
-<!--            <div class="input-group-append">-->
-<!--                <button id="send" class="btn btn-outline-success" type="button">send</button>-->
-<!--                <button id="open" class="btn btn-outline-primary" type="button">open file</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 </div>
 
 

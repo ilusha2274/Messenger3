@@ -94,9 +94,8 @@ function connect() {
 
     });
 
-    $('#messages').scrollTop($('#messages')[0].scrollHeight);
     $('#messages').on('scroll', function() {
-        if($('#messages').scrollTop() <=250 && scrollEvent){
+        if(($('#messages')[0].scrollHeight + $('#messages').scrollTop()) <=850 && scrollEvent){
             scrollEvent = false;
             load();
         }
@@ -119,38 +118,33 @@ function showMessage(message) {
     }
 }
 
-function fileUpload(file) {
-    let chatMessage;
+function uploadFile(file){
     const reader = new FileReader();
-        reader.onload = ev => {
-            const src = ev.target.result;
-            let chatID = document.querySelector('#chatID');
-            let nameAuthor = document.querySelector('#name');
-            let userId = document.querySelector('#userId');
-            chatMessage = {
-                nameAuthor: nameAuthor.value,
-                userId: userId.value,
-                content: src,
-                idChat: chatID.value,
-                haveFile: true
-            };
-        }
-        reader.readAsDataURL(file);
-        var formData = new FormData();
-        formData.append("file", files[0]);
-        formData.append('ad', new Blob(JSON.stringify(chatMessage), {
-                        type: "application/json"
-                    }));
-
-//            showMessageAuthor(chatMessage);
-//            let res = JSON.stringify(chatMessage);
-        stompClient.send("/ws/chat2/" + chatID.value, {}, JSON.stringify(formData));
-//        stompClient.send("/ws/chat2/" + chatID.value, {}, JSON.stringify(chatMessage));
+    let chatID = document.querySelector('#chatID');
+    let messageContent = document.querySelector('#message');
+    let nameAuthor = document.querySelector('#name');
+    let userId = document.querySelector('#userId');
+    messageContent.value = '';
+    reader.onload = ev =>{
+        const src = ev.target.result;
+        let chatMessage = {
+            nameAuthor: nameAuthor.value,
+            userId: userId.value,
+            content: messageContent.value,
+            idChat: chatID.value,
+            haveFile: true,
+            nameFile: src
+        };
+        stompClient.send("/ws/chat/" + chatID.value, {}, JSON.stringify(chatMessage));
+//        showMessageAuthor(chatMessage);
+    }
+    reader.readAsDataURL(file)
 }
 
 function sendMessage() {
+
     if (files[0] != null){
-        fileUpload(files[0]);
+        uploadFile(files[0]);
     }else{
         let chatID = document.querySelector('#chatID');
         let messageContent = document.querySelector('#message');
@@ -161,8 +155,9 @@ function sendMessage() {
             userId: userId.value,
             content: messageContent.value,
             idChat: chatID.value,
-            haveFile: false
-        };
+            haveFile: false,
+            nameFile: null
+        }
         showMessageAuthor(chatMessage);
         stompClient.send("/ws/chat/" + chatID.value, {}, JSON.stringify(chatMessage));
         console.log('Got post message: ' + messageContent.value );
@@ -196,7 +191,7 @@ function printNext20Message(message) {
     $("#messages").append(" <div class=\"block-message\"> " +
           " <div class=\"block-message-sender\"> " +
           " <input class = \"messageId\" type=\"hidden\" value=\"" + message.messageId + "\"> " +
-          " <p class=\"sender-message\"> " + message.message + " </p> " +
+          " <p class=\"sender-message\"> " + message.message  + " </p> " +
           " <p class=\"sender-message-author\"> " + message.nameAuthor + " </p> " +
           " <p id=\"date\" class=\"sender-message-date\"> " + message.date + " </p> " +
           " </div> " +

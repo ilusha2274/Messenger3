@@ -1,10 +1,13 @@
 package com.messenger30.Messenger30.spring;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.messenger30.Messenger30.repository.ChatRepository;
 import com.messenger30.Messenger30.repository.DatabaseChatRepository;
 import com.messenger30.Messenger30.repository.DatabaseUserRepository;
 import com.messenger30.Messenger30.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -98,6 +102,28 @@ public class SpringConfig implements WebMvcConfigurer {
         dataSource.setPassword("14789");
 
         return dataSource;
+    }
+
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(100000);
+        return multipartResolver;
+    }
+
+    @Value("${access.key.id}")
+    private String accessKey;
+
+    @Value("${secret.access.key}")
+    private String secretKey;
+
+    @Bean
+    public AWSCredentials credentials(){
+        AWSCredentials credentials = new BasicAWSCredentials(
+                accessKey,
+                secretKey
+        );
+        return credentials;
     }
 
     @Bean

@@ -9,6 +9,7 @@ public class Message {
     private Integer idAuthor;
     private String nameAuthor;
     private Integer messageId;
+    private String nameFile;
 
     public Message(User user, String text, LocalDateTime localDateTime) {
         this.text = text;
@@ -21,12 +22,21 @@ public class Message {
         this.localDateTime = localDateTime;
     }
 
-    public Message(Integer idAuthor,String text,LocalDateTime localDateTime, String nameAuthor, Integer messageId){
+    public Message(Integer idAuthor,String text,LocalDateTime localDateTime, String nameAuthor, Integer messageId, String nameFile){
         this.idAuthor = idAuthor;
         this.text = text;
         this.localDateTime = localDateTime;
         this.nameAuthor = nameAuthor;
         this.messageId = messageId;
+        this.nameFile = nameFile;
+    }
+
+    public String getNameFile() {
+        return nameFile;
+    }
+
+    public void setNameFile(String nameFile) {
+        this.nameFile = nameFile;
     }
 
     public Integer getMessageId() {

@@ -27,7 +27,7 @@
         <hr style="margin-top: 5px;">
 
         <!--поле для ввода сообщения-->
-        <form class="typing-area-border">
+        <div class="typing-area-border">
             <input id = "chatID" type="hidden" th:attr="value=${chatID}">
             <input id = "name" type="hidden" th:attr="value=${name}">
             <input id = "userId" type="hidden" th:attr="value=${userId}">
@@ -46,7 +46,7 @@
                     <use xlink:href="#send-message"></use>
                 </svg>
             </a>
-        </form>
+        </div>
     </div>
 
 </div>

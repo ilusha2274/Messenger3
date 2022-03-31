@@ -419,7 +419,7 @@ ul {
 .exception-new-friend{
     font-family: Trebuchet MS, sans-serif;
     position: absolute;
-    top: 20%;
+    top: 10%;
     left: 25px;
     width: 450px;
     font-size:20px;
@@ -604,4 +604,10 @@ ul {
     left:10px;
     font-size: 12px;
     color: rgba(255, 255, 255, 0.5);
+}
+
+.print-file{
+    max-width: 400px;
+    min-width: 0px;
+    height: auto;
 }

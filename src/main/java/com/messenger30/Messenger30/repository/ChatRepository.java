@@ -28,4 +28,6 @@ public interface ChatRepository {
     List<Message> findFirst20(int chatId);
 
     List<Message> next20(int chatId, int messageId);
+
+    void uploadFileInMessage (String nameFile, int idMessage);
 }

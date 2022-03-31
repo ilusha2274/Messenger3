@@ -46,8 +46,13 @@ public class FriendsController {
             model.addAttribute("activePage", "FRIENDS");
             model.addAttribute("exception", "Пользователь не найден");
         } else {
-            addFriend(user, user2);
-            model.addAttribute("activePage", "FRIENDS");
+            if (userRepository.alreadyFriends(user.getId(), user2.getId())){
+                model.addAttribute("activePage", "FRIENDS");
+                model.addAttribute("exception", "Это пользователь уже находится в вашем списку друзей");
+            }else{
+                addFriend(user, user2);
+                model.addAttribute("activePage", "FRIENDS");
+            }
         }
         List<PrintFriend> printFriends = userRepository.findListFriendsByUser(user);
         model.addAttribute("printFriends", printFriends);

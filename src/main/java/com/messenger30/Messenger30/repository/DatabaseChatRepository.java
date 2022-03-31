@@ -100,6 +100,7 @@ public class DatabaseChatRepository implements ChatRepository{
                         text, chatId, user.getId(), java.sql.Timestamp.valueOf(localDateTime));
 
                 jdbcTemplate.update("UPDATE chats SET chat_last_message=? WHERE chat_id=?", id, chatId);
+                message.setMessageId(id);
             }
         });
         return message;
@@ -182,7 +183,7 @@ public class DatabaseChatRepository implements ChatRepository{
 
     @Override
     public List<Message> findFirst20(int chatId) {
-        return jdbcTemplate.query(" SELECT messages.date_message, messages.user_id, messages.text_message, users.user_name, messages.message_id " +
+        return jdbcTemplate.query(" SELECT messages.date_message, messages.user_id, messages.text_message, users.user_name, messages.message_id, messages.name_file " +
                 " FROM messages " +
                 " JOIN users " +
                 " ON messages.user_id = users.user_id " +
@@ -191,10 +192,15 @@ public class DatabaseChatRepository implements ChatRepository{
 
     @Override
     public List<Message> next20(int chatId, int messageId) {
-        return jdbcTemplate.query(" SELECT messages.date_message, messages.user_id, messages.text_message, users.user_name, messages.message_id " +
+        return jdbcTemplate.query(" SELECT messages.date_message, messages.user_id, messages.text_message, users.user_name, messages.message_id, messages.name_file " +
                 " FROM messages " +
                 " JOIN users " +
                 " ON messages.user_id = users.user_id " +
                 " WHERE chat_id=? AND message_id < ? ORDER BY message_id DESC LIMIT 20 ",new MessageMapper(),chatId,messageId);
+    }
+
+    @Override
+    public void uploadFileInMessage (String nameFile, int idMessage){
+        jdbcTemplate.update("UPDATE messages SET name_file=? WHERE message_id=?", nameFile, idMessage);
     }
 }

@@ -2,6 +2,7 @@
 
     <div class="block-message-receiver">
         <input class = "messageId" type="hidden" th:attr="value=${printMessage.messageId}">
+        <img th:if="${printMessage.file}" th:attr="src=${printMessage.nameFile}" class="print-file">
         <p class="receiver-message" th:text ="${printMessage.message}"></p>
         <p id="date" class="receiver-message-date" th:text ="${printMessage.date}"></p>
     </div>

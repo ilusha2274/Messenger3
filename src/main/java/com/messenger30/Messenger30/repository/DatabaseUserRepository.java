@@ -128,4 +128,10 @@ public class DatabaseUserRepository implements UserRepository, UserDetailsServic
                         " where uu.user1_id = ? ",
                 new PrintFriendMapper(), user.getId());
     }
+
+    @Override
+    public boolean alreadyFriends (int user1, int user2){
+        int res = jdbcTemplate.queryForObject("SELECT count(*) FROM users_users WHERE user1_id = ? AND user2_id = ?",Integer.class , user1, user2);
+        return res > 0;
+    }
 }

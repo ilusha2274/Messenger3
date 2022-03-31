@@ -60,7 +60,6 @@ const changeHandler = event => {
             </div>
         `)
     }
-
     reader.readAsDataURL(files[0]);
 }
 
@@ -106,74 +105,88 @@ function showMessage(message) {
     console.log('Got message: ' + message.content);
     let userId = document.querySelector('#userId');
     if (userId.value == message.userId){
-    $("#date").html(message.time);
+        $("#date").html(message.time);
     }else{
-    $("#messages").prepend(" <div class=\"block-message\"> " +
-         " <div class=\"block-message-sender\"> " +
-         " <p class=\"sender-message\"> " + message.content + " </p> " +
-         " <p class=\"sender-message-author\"> " + message.nameAuthor + " </p> " +
-         " <p id=\"date\" class=\"sender-message-date\"> " + message.time + " </p> " +
-         " </div> " +
-         " </div> ");
+        if(message.haveFile){
+            $("#messages").prepend(" <div class=\"block-message\"> " +
+             " <div class=\"block-message-sender\"> " +
+             " <div> " +
+                 " <img class=\"print-file\" src=\"" + message.nameFile + "\"> " +
+             " </div> " +
+             " <div style=\"position:relative; width: auto\"> " +
+                 " <p class=\"sender-message\"> " + message.content + " </p> " +
+                 " <p class=\"sender-message-author\"> " + message.nameAuthor + " </p> " +
+                 " <p id=\"date\" class=\"sender-message-date\"> " + message.time + " </p> " +
+             " </div> " +
+             " </div> " +
+             " </div> ");
+        }else{
+            $("#messages").prepend(" <div class=\"block-message\"> " +
+             " <div class=\"block-message-sender\"> " +
+             " <p class=\"sender-message\"> " + message.content + " </p> " +
+             " <p class=\"sender-message-author\"> " + message.nameAuthor + " </p> " +
+             " <p id=\"date\" class=\"sender-message-date\"> " + message.time + " </p> " +
+             " </div> " +
+             " </div> ");
+        }
     }
 }
 
-function uploadFile(file){
+function uploadFile(file, chatMessage){
     const reader = new FileReader();
-    let chatID = document.querySelector('#chatID');
-    let messageContent = document.querySelector('#message');
-    let nameAuthor = document.querySelector('#name');
-    let userId = document.querySelector('#userId');
-    messageContent.value = '';
-    reader.onload = ev =>{
+    reader.onload = ev => {
         const src = ev.target.result;
-        let chatMessage = {
-            nameAuthor: nameAuthor.value,
-            userId: userId.value,
-            content: messageContent.value,
-            idChat: chatID.value,
-            haveFile: true,
-            nameFile: src
-        };
+        chatMessage.haveFile = true;
+        chatMessage.nameFile = src;
+        showMessageAuthor(chatMessage);
         stompClient.send("/ws/chat/" + chatID.value, {}, JSON.stringify(chatMessage));
-//        showMessageAuthor(chatMessage);
     }
     reader.readAsDataURL(file)
 }
 
 function sendMessage() {
 
+    let chatID = document.querySelector('#chatID');
+    let messageContent = document.querySelector('#message');
+    let nameAuthor = document.querySelector('#name');
+    let userId = document.querySelector('#userId');
+    let chatMessage = {
+        nameAuthor: nameAuthor.value,
+        userId: userId.value,
+        content: messageContent.value,
+        idChat: chatID.value,
+        haveFile: false,
+        nameFile: null
+    };
+    messageContent.value = '';
+
     if (files[0] != null){
-        uploadFile(files[0]);
+        uploadFile(files[0], chatMessage);
     }else{
-        let chatID = document.querySelector('#chatID');
-        let messageContent = document.querySelector('#message');
-        let nameAuthor = document.querySelector('#name');
-        let userId = document.querySelector('#userId');
-        let chatMessage = {
-            nameAuthor: nameAuthor.value,
-            userId: userId.value,
-            content: messageContent.value,
-            idChat: chatID.value,
-            haveFile: false,
-            nameFile: null
-        }
         showMessageAuthor(chatMessage);
         stompClient.send("/ws/chat/" + chatID.value, {}, JSON.stringify(chatMessage));
         console.log('Got post message: ' + messageContent.value );
-        messageContent.value = '';
     }
 }
 
 function showMessageAuthor(message) {
     console.log('Got message: ' + message.content);
-    $("#messages").prepend(" <div align=\"right\" class=\"block-message\"> " +
-       " <div class=\"block-message-receiver\"> " +
-       " <p class=\"receiver-message\"> " + message.content + " </p> " +
-       " <p id=\"date\" class=\"receiver-message-date\"> " + message.time + " </p> " +
-       " </div> " +
-       " </div> ");
-
+    if (message.haveFile){
+        $("#messages").prepend(" <div align=\"right\" class=\"block-message\"> " +
+           " <div class=\"block-message-receiver\"> " +
+           " <img class=\"print-file\" src=\"" + message.nameFile + "\"> " +
+           " <p class=\"receiver-message\"> " + message.content + " </p> " +
+           " <p id=\"date\" class=\"receiver-message-date\"> " + message.time + " </p> " +
+           " </div> " +
+           " </div> ");
+    }else{
+        $("#messages").prepend(" <div align=\"right\" class=\"block-message\"> " +
+           " <div class=\"block-message-receiver\"> " +
+           " <p class=\"receiver-message\"> " + message.content + " </p> " +
+           " <p id=\"date\" class=\"receiver-message-date\"> " + message.time + " </p> " +
+           " </div> " +
+           " </div> ");
+    }
     $('#messages').scrollTop($('#messages')[0].scrollHeight);
 }
 

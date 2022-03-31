@@ -6,19 +6,36 @@ public class PrintMessage {
     private String date;
     private String nameAuthor;
     private Integer messageId;
+    private String nameFile;
+    private boolean file;
 
-    public PrintMessage(boolean author, String message, String date,String nameAuthor, Integer messageId) {
+    public PrintMessage(boolean author, String message, String date,String nameAuthor, Integer messageId,boolean file) {
         this.author = author;
         this.message = message;
         this.date = date;
         this.nameAuthor = nameAuthor;
         this.messageId = messageId;
+        this.file = file;
     }
 
     public PrintMessage() {
     }
 
+    public boolean isFile() {
+        return file;
+    }
 
+    public void setFile(boolean file) {
+        this.file = file;
+    }
+
+    public String getNameFile() {
+        return nameFile;
+    }
+
+    public void setNameFile(String nameFile) {
+        this.nameFile = nameFile;
+    }
 
     public Integer getMessageId() {
         return messageId;

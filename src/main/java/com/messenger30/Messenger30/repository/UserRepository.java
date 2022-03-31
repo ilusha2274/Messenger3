@@ -27,4 +27,6 @@ public interface UserRepository {
     void addNewFriends(User user1, User user2);
 
     List<PrintFriend> findListFriendsByUser(User user);
+
+    boolean alreadyFriends (int user1, int user2);
 }

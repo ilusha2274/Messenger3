@@ -44,58 +44,61 @@
         </symbol>
     </svg>
 
-    <!--блок меню-->
-    <div class="block-menu-border">
-        <blockMenu th:include="blocks/blockMenu :: blockMenu"></blockMenu>
-    </div>
+    <div class="main">
+        <!--блок меню-->
+        <div class="block-menu-border">
+            <blockMenu th:include="blocks/blockMenu :: blockMenu"></blockMenu>
+        </div>
 
-    <!-- chat box-->
-    <div class="friend-menu-border">
-        <div class="friend-menu">
-            <nav>
-                <div class="form-search">
-                    <a href="#popup-new-friend">
-                        <svg class="add-friend-icon"    >
-                            <use xlink:href="#add-friend"></use>
+        <!-- chat box-->
+        <div class="friend-menu-border">
+            <div class="friend-menu">
+                <nav>
+                    <div class="form-search">
+                        <a href="#popup-new-friend">
+                            <svg class="add-friend-icon"    >
+                                <use xlink:href="#add-friend"></use>
+                            </svg>
+                        </a>
+                        <input class="input-search" placeholder="Search">
+                        <svg class="search-icon">
+                            <use xlink:href="#search"></use>
                         </svg>
-                    </a>
-                    <input class="input-search" placeholder="Search">
-                    <svg class="search-icon">
-                        <use xlink:href="#search"></use>
-                    </svg>
-                    <button style="display:none" type="submit">Search</button>
+                        <button style="display:none" type="submit">Search</button>
+                    </div>
+                </nav>
+
+                <hr>
+
+                <div class="friends-box">
+                    <tr th:each="printChat : ${printChats}">
+                        <td th:include="blocks/blockChat :: blockChat"></td>
+                    </tr>
                 </div>
-            </nav>
+            </div>
+        </div>
 
-            <hr>
+        <div class="chat-box-border">
+            <td th:if="${active}" th:include="blocks/blockChatBox :: blockChatBox"></td>
+        </div>
 
-            <div class="friends-box">
-                <tr th:each="printChat : ${printChats}">
-                    <td th:include="blocks/blockChat :: blockChat"></td>
-                </tr>
+        <!--popup добавление нового друга-->
+        <div id="popup-new-friend" class="popup-new-friend">
+            <a href="#" class="popup__area"></a>
+            <div class="popup-new-friend__body">
+                <div class="popup-new-friend__content">
+                    <form method="post">
+                        <a href="#" class="popup-new-friend__close">&times;</a>
+                        <input type="text" class="input-new-friend" name="email" id="email" placeholder="name@example.com">
+                        <label align="center" class="label-email" for="email">Для добавления в друзья введите email пользователя</label>
+                        <p align="center" class="exception-new-friend" th:text="${exception}"></p>
+                        <button class="button-new-friend" type="submit">Add User</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="chat-box-border">
-        <td th:if="${active}" th:include="blocks/blockChatBox :: blockChatBox"></td>
-    </div>
-
-    <!--popup добавление нового друга-->
-    <div id="popup-new-friend" class="popup-new-friend">
-        <a href="#" class="popup__area"></a>
-        <div class="popup-new-friend__body">
-            <div class="popup-new-friend__content">
-                <form method="post">
-                    <a href="#" class="popup-new-friend__close">&times;</a>
-                    <input type="text" class="input-new-friend" name="email" id="email" placeholder="name@example.com">
-                    <label align="center" class="label-email" for="email">Для добавления в друзья введите email пользователя</label>
-                    <p align="center" class="exception-new-friend" th:text="${exception}"></p>
-                    <button class="button-new-friend" type="submit">Add User</button>
-                </form>
-            </div>
-        </div>
-    </div>
 
 </body>
 

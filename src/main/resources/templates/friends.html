@@ -30,50 +30,52 @@
         </symbol>
     </svg>
 
-    <!--блок меню-->
-    <div class="block-menu-border">
-        <blockMenu th:include="blocks/blockMenu :: blockMenu"></blockMenu>
-    </div>
+    <div class="main">
+        <!--блок меню-->
+        <div class="block-menu-border">
+            <blockMenu th:include="blocks/blockMenu :: blockMenu"></blockMenu>
+        </div>
 
-    <!-- friends box-->
-    <div class="friend-menu-border">
-        <div class="friend-menu">
-            <nav>
-                <div class="form-search">
-                    <a href="#popup-new-friend">
-                        <svg class="add-friend-icon"    >
-                            <use xlink:href="#add-friend"></use>
+        <!-- friends box-->
+        <div class="friend-menu-border">
+            <div class="friend-menu">
+                <nav>
+                    <div class="form-search">
+                        <a href="#popup-new-friend">
+                            <svg class="add-friend-icon"    >
+                                <use xlink:href="#add-friend"></use>
+                            </svg>
+                        </a>
+                        <input class="input-search" placeholder="Search">
+                        <svg class="search-icon">
+                            <use xlink:href="#search"></use>
                         </svg>
-                    </a>
-                    <input class="input-search" placeholder="Search">
-                    <svg class="search-icon">
-                        <use xlink:href="#search"></use>
-                    </svg>
+                    </div>
+                </nav>
+
+                <hr>
+
+                <div class="friends-box">
+                    <tr th:each="printFriend : ${printFriends}">
+                        <td th:include="blocks/blockFriends :: blockFriends"></td>
+                    </tr>
                 </div>
-            </nav>
-
-            <hr>
-
-            <div class="friends-box">
-                <tr th:each="printFriend : ${printFriends}">
-                    <td th:include="blocks/blockFriends :: blockFriends"></td>
-                </tr>
             </div>
         </div>
-    </div>
 
-    <!--popup добавление нового друга-->
-    <div id="popup-new-friend" class="popup-new-friend">
-        <a href="#" class="popup__area"></a>
-        <div class="popup-new-friend__body">
-            <div class="popup-new-friend__content">
-                <form method="post">
-                    <a href="#" class="popup-new-friend__close">&times;</a>
-                    <input type="text" class="input-new-friend" name="email" id="email" placeholder="name@example.com">
-                    <label align="center" class="label-email" for="email">Для добавления в друзья введите email пользователя</label>
-                    <p align="center" class="exception-new-friend" th:text="${exception}"></p>
-                    <button class="button-new-friend" type="submit">Add User</button>
-                </form>
+        <!--popup добавление нового друга-->
+        <div id="popup-new-friend" class="popup-new-friend">
+            <a href="#" class="popup__area"></a>
+            <div class="popup-new-friend__body">
+                <div class="popup-new-friend__content">
+                    <form method="post">
+                        <a href="#" class="popup-new-friend__close">&times;</a>
+                        <input type="text" class="input-new-friend" name="email" id="email" placeholder="name@example.com">
+                        <label align="center" class="label-email" for="email">Для добавления в друзья введите email пользователя</label>
+                        <p align="center" class="exception-new-friend" th:text="${exception}"></p>
+                        <button class="button-new-friend" type="submit">Add User</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

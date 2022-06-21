@@ -1,13 +1,14 @@
 package com.messenger30.Messenger30.controllers;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.messenger30.Messenger30.helper.PrintMessage;
 import com.messenger30.Messenger30.repository.Chat;
 import com.messenger30.Messenger30.repository.ChatRepository;
@@ -24,17 +25,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.Base64Utils;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.s3.AmazonS3;
 
-import javax.persistence.Convert;
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -53,7 +49,7 @@ public class ChatController {
     private final DateTimeFormatter dateTimeFormatterTime = DateTimeFormatter.ofPattern("HH:mm");
     private final DateTimeFormatter dateTimeFormatterDate = DateTimeFormatter.ofPattern("dd MMM", Locale.ENGLISH);
 
-    public ChatController(ChatRepository chatRepository, SimpMessagingTemplate simpMessagingTemplate,AWSCredentials credentials) {
+    public ChatController(ChatRepository chatRepository, SimpMessagingTemplate simpMessagingTemplate, AWSCredentials credentials) {
         this.chatRepository = chatRepository;
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.credentials = credentials;
@@ -103,27 +99,27 @@ public class ChatController {
 
     @GetMapping(value = "/chat/{id}/{messageId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Collection<PrintMessage> printNext20messages (@AuthenticationPrincipal User user, @PathVariable Integer id, @PathVariable Integer messageId){
-        ArrayList<PrintMessage> printMessage = printMessages(chatRepository.next20(id,messageId), user);
+    public Collection<PrintMessage> printNext20messages(@AuthenticationPrincipal User user, @PathVariable Integer id, @PathVariable Integer messageId) {
+        ArrayList<PrintMessage> printMessage = printMessages(chatRepository.next20(id, messageId), user);
         return printMessage;
     }
 
     @MessageMapping("/chat/{id}")
     //@SendTo("/queue/messages/chat/{id}")
-    public void sendMessage(@Payload ChatMessage chatMessage , @DestinationVariable Integer id,
+    public void sendMessage(@Payload ChatMessage chatMessage, @DestinationVariable Integer id,
                             UsernamePasswordAuthenticationToken authenticationToken) {
 
         User user = (User) authenticationToken.getPrincipal();
-        boolean result = chatRepository.findUserInChat(id,user);
+        boolean result = chatRepository.findUserInChat(id, user);
 
-        if(result){
+        if (result) {
             Message newMessage = chatRepository.addMessageToChat(chatMessage.getContent(), user, id);
             String date = newMessage.getLocalDateTime().format(dateTimeFormatterTime);
 //                + " | " + newMessage.getLocalDateTime().format(dateTimeFormatterDate);
 
             chatMessage.setTime(HtmlUtils.htmlEscape(date));
 
-            if (chatMessage.isHaveFile()){
+            if (chatMessage.isHaveFile()) {
                 uploadFile(chatMessage, newMessage.getMessageId());
             }
 
@@ -135,9 +131,10 @@ public class ChatController {
 
     }
 
-    private void uploadFile (ChatMessage chatMessage, int id){
+    private void uploadFile(ChatMessage chatMessage, int id) {
 
         String urlFile = chatMessage.getNameFile().replaceAll("data:image/png;base64,", "");
+        urlFile = chatMessage.getNameFile().replaceAll("data:image/jpeg;base64,", "");
         InputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(urlFile));
 
         ObjectMetadata metadata = null;
@@ -147,15 +144,15 @@ public class ChatController {
                         uploadPath,
                         "ru-moscow")).build();
         try {
-            s3.putObject(nameBucket, nameFile, inputStream,metadata);
-            chatRepository.uploadFileInMessage(nameFile,id);
+            s3.putObject(nameBucket, nameFile, inputStream, metadata);
+            chatRepository.uploadFileInMessage(nameFile, id);
         } catch (AmazonServiceException e) {
             System.err.println(e.getErrorMessage());
             System.exit(1);
         }
     }
 
-    public String downloadFile (String key_name){
+    public String downloadFile(String key_name) {
         System.out.format("Downloading %s from S3 bucket %s...\n", key_name, nameBucket);
         final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
@@ -183,11 +180,11 @@ public class ChatController {
         return str;
     }
 
-    private String stringGeneration(){
-        String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private String stringGeneration() {
+        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
-        for (int i =0;i<12;i++){
+        for (int i = 0; i < 12; i++) {
             int num = random.nextInt(62);
             sb.append(str.charAt(num));
         }
@@ -213,11 +210,11 @@ public class ChatController {
 //                + " | " + message.getLocalDateTime().format(dateTimeFormatterDate);
 
         if (message.getIdAuthor().equals(user.getId())) {
-            printMessage = new PrintMessage(true, message.getText(), date, message.getNameAuthor(),message.getMessageId(),false);
+            printMessage = new PrintMessage(true, message.getText(), date, message.getNameAuthor(), message.getMessageId(), false);
         } else {
-            printMessage = new PrintMessage(false, message.getText(), date, message.getNameAuthor(),message.getMessageId(),false);
+            printMessage = new PrintMessage(false, message.getText(), date, message.getNameAuthor(), message.getMessageId(), false);
         }
-        if (message.getNameFile() != null){
+        if (message.getNameFile() != null) {
             printMessage.setFile(true);
             printMessage.setNameFile(downloadFile(message.getNameFile()));
 //            printMessage.setNameFile(message.getNameFile());

@@ -41,7 +41,6 @@ public class AddUserGroupChatController {
             model.addAttribute("activePage", "CHAT");
             model.addAttribute("title", user.getName());
             return "redirect:chat";
-
         } else {
             model.addAttribute("activePage", "ADDUSERGROUPCHAT");
             model.addAttribute("exception", "чат или пользователь не найден");

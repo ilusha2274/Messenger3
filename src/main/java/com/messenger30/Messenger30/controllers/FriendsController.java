@@ -46,10 +46,10 @@ public class FriendsController {
             model.addAttribute("activePage", "FRIENDS");
             model.addAttribute("exception", "Пользователь не найден");
         } else {
-            if (userRepository.alreadyFriends(user.getId(), user2.getId())){
+            if (userRepository.alreadyFriends(user.getId(), user2.getId())) {
                 model.addAttribute("activePage", "FRIENDS");
                 model.addAttribute("exception", "Это пользователь уже находится в вашем списку друзей");
-            }else{
+            } else {
                 addFriend(user, user2);
                 model.addAttribute("activePage", "FRIENDS");
             }

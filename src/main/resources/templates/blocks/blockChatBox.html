@@ -4,9 +4,12 @@
         <!--верхняя панель-->
         <nav>
             <div class="form-search">
-                <svg class="trash-can-icon-naw">
-                    <use xlink:href="#trash-can"></use>
-                </svg>
+                <div class="delete-chat">
+                    <svg class="trash-can-icon-naw">
+                        <use xlink:href="#trash-can"></use>
+                    </svg>
+                    <div class="prompt-delete-chat">Удалить чат</div>
+                </div>
                 <input class="input-search" placeholder="Search">
                 <svg class="search-icon">
                     <use xlink:href="#search"></use>
@@ -34,18 +37,16 @@
 
 <!--            <button id="send" class="btn btn-outline-success" type="button">send</button>-->
 <!--            <button id="open" class="btn btn-outline-primary" type="button">open file</button>-->
-            <a onclick="#file" id="open">
-                <svg class="clip-icon">
-                    <use xlink:href="#clip"></use>
-                </svg>
-            </a>
+            <div class="add-file">
+                <a onclick="#file" id="open">
+                    <svg class="clip-icon">
+                        <use xlink:href="#clip"></use>
+                    </svg>
+                </a>
+                <div class="prompt-add-file">Добавить файл</div>
+            </div>
             <input type="text" id ="message" name="message" placeholder="Type a message" class="input-message">
             <input type="file" name="file" id="file" class="file-button">
-            <a>
-                <svg align="right" class="send-message-icon">
-                    <use xlink:href="#send-message"></use>
-                </svg>
-            </a>
         </div>
     </div>
 

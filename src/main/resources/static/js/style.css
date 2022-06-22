@@ -221,6 +221,7 @@ ul {
 }
 
 .form-search{
+    display:flex;
     position:relative;
     height: 35px;
     margin-bottom: 5px;
@@ -229,11 +230,11 @@ ul {
 .input-search{
     color: #d1d1d1;
     position: absolute;
-    right: 40px;
+    right: 0px;
     height: 30px;
     padding-left:15px;
     background-color: #232932;
-    border-radius: 15px;
+    border-radius: 7px;
     border: 0px solid rgba(28, 32, 40, 1.0);
     outline: none;
 }
@@ -259,9 +260,20 @@ ul {
     fill: #748198;
 }
 
+.add-group-chat-icon{
+    width: 30px;
+    height: 30px;
+    fill: #232932;
+    cursor: pointer;
+}
+
+.add-group-chat-icon:hover{
+    fill: #748198;
+}
+
 .clip-icon{
-    width: 40px;
-    height: 40px;
+    width: 37px;
+    height: 37px;
     fill: #232932;
     cursor: pointer;
 }
@@ -313,11 +325,164 @@ ul {
     width: 30px;
     height: 30px;
     fill: #232932;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .add-friend-icon:hover{
     fill: #748198;
+}
+
+.add-file{
+    width: 35px;
+    height: 35px;
+    margin:0px;
+}
+
+.add-file:hover .prompt-add-file{
+    opacity: 0.8;
+    visibility: visible;
+}
+
+.prompt-add-file{
+    line-height: 15px;
+    visibility: hidden;
+    opacity: 0;
+    font-size: 13px;
+    font-family: sans-serif;
+    position:absolute;
+    bottom: 45px;
+    left: -20px;
+    padding:7px;
+    border-radius: 7px;
+    color: #fff;
+    background-color: #000;
+    z-index: 1;
+
+    transition: all .17s;
+}
+
+.prompt-add-file::after{
+    content: '';
+    position:absolute;
+    border: 0 solid transparent;
+    left: 30%;
+    top: 100%;
+    border-width: 5px 5px 0px 5px;
+    border-top-color: #000;
+}
+
+.delete-chat{
+    width: 30px;
+    height: 30px;
+    margin:0px;
+}
+
+.delete-chat:hover .prompt-delete-chat{
+    opacity: 0.8;
+    visibility: visible;
+}
+
+.prompt-delete-chat{
+    visibility: hidden;
+    opacity: 0;
+    font-size: 13px;
+    font-family: sans-serif;
+    position:absolute;
+    top:41px;
+    left: -14px;
+    padding:7px;
+    border-radius: 7px;
+    color: #fff;
+    background-color: #000;
+    z-index: 1;
+
+    transition: all .17s;
+}
+
+.prompt-delete-chat::after{
+    content: '';
+    position:absolute;
+    border: 0 solid transparent;
+    left: 30%;
+    bottom: 100%;
+    border-width: 0 5px 5px 5px;
+    border-bottom-color: #000;
+}
+
+.new-group-chat{
+    width: 30px;
+    height: 30px;
+    margin:0px;
+}
+
+.new-group-chat:hover .prompt-new-group-chat{
+    opacity: 0.8;
+    visibility: visible;
+}
+
+.prompt-new-group-chat{
+    visibility: hidden;
+    opacity: 0;
+    font-size: 13px;
+    font-family: sans-serif;
+    position:absolute;
+    top:41px;
+    left: -30px;
+    padding:7px;
+    border-radius: 7px;
+    color: #fff;
+    background-color: #000;
+    z-index: 1;
+
+    transition: all .17s;
+}
+
+.prompt-new-group-chat::after{
+    content: '';
+    position:absolute;
+    border: 0 solid transparent;
+    left: 30%;
+    bottom: 100%;
+    border-width: 0 5px 5px 5px;
+    border-bottom-color: #000;
+}
+
+.add-friend{
+    width: 30px;
+    height: 30px;
+    margin:0px;
+}
+
+.add-friend:hover .prompt-add-friend{
+    opacity: 0.8;
+    visibility: visible;
+}
+
+.prompt-add-friend{
+    visibility: hidden;
+    opacity: 0;
+    font-size: 13px;
+    font-family: sans-serif;
+    position:absolute;
+    top:41px;
+    left: -30px;
+    padding:7px;
+    border-radius: 7px;
+    color: #fff;
+    background-color: #000;
+    z-index: 1;
+
+    transition: all .17s;
+}
+
+.prompt-add-friend::after{
+    content: '';
+    position:absolute;
+    border: 0 solid transparent;
+    left: 35%;
+    bottom: 100%;
+    border-width: 0 5px 5px 5px;
+    border-bottom-color: #000;
 }
 
 .friends-box{
@@ -330,7 +495,6 @@ ul {
 
 ::-webkit-scrollbar{
     width: 8px;
-    hidden: 100px;
 }
 
 ::-webkit-scrollbar-track{
@@ -557,7 +721,7 @@ ul {
 }
 
 .chat-box-message{
-    height: calc(100% - 100px);
+    height: calc(100% - 88px);
     border-radius: 15px;
     overflow-y:auto;
     overflow-x:hidden;
@@ -570,22 +734,22 @@ ul {
     bottom: 8px;
     height: 40px;
     line-height: 40px;
-    width: 100%;
+    width: calc(100% - 20px);
     display: flex;
 }
 
 .input-message{
+    margin-left:10px;
+    margin-right:10px;
     color: #d1d1d1;
-    margin-left: 15px;
-    margin-right: 15px;
     height: 35px;
     width: 70%;
     padding-left:15px;
     background-color: #232932;
-    border-radius: 15px;
+    border-radius: 7px;
     border: 0px solid rgba(28, 32, 40, 1.0);
     outline: none;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .input-message:focus::placeholder{

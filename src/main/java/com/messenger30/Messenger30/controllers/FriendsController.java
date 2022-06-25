@@ -5,11 +5,11 @@ import com.messenger30.Messenger30.repository.Chat;
 import com.messenger30.Messenger30.repository.ChatRepository;
 import com.messenger30.Messenger30.repository.User;
 import com.messenger30.Messenger30.repository.UserRepository;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +45,12 @@ public class FriendsController {
         if (user2 == null) {
             model.addAttribute("activePage", "FRIENDS");
             model.addAttribute("exception", "Пользователь не найден");
+            model.addAttribute("openPopup", true);
         } else {
             if (userRepository.alreadyFriends(user.getId(), user2.getId())) {
                 model.addAttribute("activePage", "FRIENDS");
-                model.addAttribute("exception", "Это пользователь уже находится в вашем списку друзей");
+                model.addAttribute("exception", "Это пользователь уже находится в вашем списке друзей");
+                model.addAttribute("openPopup", true);
             } else {
                 addFriend(user, user2);
                 model.addAttribute("activePage", "FRIENDS");

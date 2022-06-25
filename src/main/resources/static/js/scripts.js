@@ -232,5 +232,4 @@ function load(){
         }
     };
     xhr.send();
-
 };

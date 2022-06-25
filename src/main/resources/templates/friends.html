@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Messenger</title>
     <link rel="stylesheet" href="/static/js/style.css">
-    <script src="/static/js/friends-scripts.js"></script>
+    <script src="/static/js/openPopup.js"></script>
 </head>
 
 <body>
@@ -42,7 +42,7 @@
                 <nav>
                     <div class="form-search">
                         <div class="add-friend">
-                            <a href="#popup-new-friend">
+                            <a onclick="openPopupAddFriend()">
                                 <svg class="add-friend-icon" data-title="Добавить друга">
                                     <use xlink:href="#add-friend"></use>
                                 </svg>
@@ -66,20 +66,21 @@
         </div>
 
         <!--popup добавление нового друга-->
-        <div id="popup-new-friend" class="popup-new-friend">
-            <a href="#" class="popup__area"></a>
+        <div id="popup-new-friend" class="popup-new-friend" th:classappend="${openPopup} ? open">
+            <a onclick="closePopupAddFriend()" class="popup__area"></a>
             <div class="popup-new-friend__body">
                 <div class="popup-new-friend__content">
-                    <form method="post">
-                        <a href="#" class="popup-new-friend__close">&times;</a>
+                    <h1 class="new-friend-text">Новый друг</h1>
+                    <form class="formNewFriend" method="post">
                         <input type="text" class="input-new-friend" name="email" id="email" placeholder="name@example.com">
-                        <label align="center" class="label-email" for="email">Для добавления в друзья введите email пользователя</label>
-                        <p align="center" class="exception-new-friend" th:text="${exception}"></p>
+                        <p class="label-email">Для добавления в друзья введите email пользователя</p>
+                        <p id="exception-new-friend" class="exception-new-friend" th:text="${exception}"></p>
                         <button class="button-new-friend" type="submit">Add User</button>
                     </form>
                 </div>
             </div>
         </div>
+
     </div>
 
 </body>

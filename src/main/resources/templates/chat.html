@@ -62,7 +62,7 @@
                 <nav>
                     <div class="form-search">
                         <div class="new-group-chat">
-                            <a href="#popup-new-friend">
+                            <a href="/newgroupchat">
                                 <svg class="add-group-chat-icon">
                                     <use xlink:href="#add-group-chat"></use>
                                 </svg>
@@ -92,20 +92,20 @@
         </div>
 
         <!--popup добавление нового друга-->
-        <div id="popup-new-friend" class="popup-new-friend">
-            <a href="#" class="popup__area"></a>
-            <div class="popup-new-friend__body">
-                <div class="popup-new-friend__content">
-                    <form method="post">
-                        <a href="#" class="popup-new-friend__close">&times;</a>
-                        <input type="text" class="input-new-friend" name="email" id="email" placeholder="name@example.com">
-                        <label align="center" class="label-email" for="email">Для добавления в друзья введите email пользователя</label>
-                        <p align="center" class="exception-new-friend" th:text="${exception}"></p>
-                        <button class="button-new-friend" type="submit">Add User</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+<!--        <div id="popup-new-friend" th:class="${newAdd == 'NEWADD'} ? popup-add-group-chat-active : popup-add-group-chat">-->
+<!--            <a href="#" class="popup__area"></a>-->
+<!--            <div class="popup-new-friend__body">-->
+<!--                <div class="popup-new-friend__content">-->
+<!--                    <form method="post">-->
+<!--                        <a href="#" class="popup-new-friend__close">&times;</a>-->
+<!--                        <input type="text" class="input-new-friend" name="email" id="email" placeholder="name@example.com">-->
+<!--                        <label align="center" class="label-email" for="email">Для добавления в друзья введите email пользователя</label>-->
+<!--                        <p align="center" class="exception-new-friend" th:text="${exception}"></p>-->
+<!--                        <button class="button-new-friend" type="submit">Add User</button>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 
 

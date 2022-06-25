@@ -28,13 +28,14 @@ public class NewGroupChatController {
     @GetMapping("/newgroupchat")
     public String printHewMessage(@AuthenticationPrincipal User user, Model model) {
 
-        List<PrintFriend> printFriends = userRepository.findListFriendsByUser(user);
+//        List<PrintFriend> printFriends = userRepository.findListFriendsByUser(user);
+//
+//        model.addAttribute("printFriends", printFriends);
+//        model.addAttribute("activePage", "NEWGROUPCHAT");
+//        model.addAttribute("title", user.getName());
+        model.addAttribute("newAdd", true);
 
-        model.addAttribute("printFriends", printFriends);
-        model.addAttribute("activePage", "NEWGROUPCHAT");
-        model.addAttribute("title", user.getName());
-
-        return "newgroupchat";
+        return "redirect:/chat";
     }
 
     @PostMapping("/newgroupchat")

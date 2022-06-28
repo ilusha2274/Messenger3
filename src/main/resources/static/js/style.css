@@ -534,7 +534,7 @@ ul {
     background-color: #232932;
 }
 
-popup-add-group-chat{
+.popup{
     position: fixed;
     width: 100%;
     height: 100%;
@@ -548,31 +548,12 @@ popup-add-group-chat{
     transition: all 0.5s ease 0s;
 }
 
-popup-add-group-chat.open{
+.popup.open{
     opacity: 1;
     visibility: visible;
 }
 
-.popup-new-friend{
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    top:0;
-    left:0;
-    opacity: 0;
-    visibility: hidden;
-    overflow-y:auto;
-    overflow-x:hidden;
-    transition: all 0.5s ease 0s;
-}
-
-.popup-new-friend.open{
-    opacity: 1;
-    visibility: visible;
-}
-
-.popup-new-friend__body{
+.popup-body{
     min-height:100%;
     display: flex;
     align-items: center;
@@ -597,18 +578,37 @@ popup-add-group-chat.open{
     opacity: 0.85;
 }
 
-.formNewFriend{
+.form-new-friend{
     width: 100%;
     height: 200px;
 }
 
-.popup__area{
+.popup-area{
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
     cursor:pointer;
+}
+
+.popup-new-group-chat__content{
+    background-color: rgba(28, 32, 40, 1.0);
+    border-radius: 10px;
+    width: 350px;
+    height: 600px;
+    position:relative;
+    padding: 10px;
+}
+
+.form-new-group-chat{
+    width: 100%;
+    height: calc(100% - 110px);
+}
+
+.list-friend{
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .input-new-friend{

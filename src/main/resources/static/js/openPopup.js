@@ -11,3 +11,15 @@ function closePopupAddFriend(){
     popUp.classList.remove('open')
     return
 }
+
+function openPopupNewGroupChat(){
+    let popUp= document.getElementById('popup-new-group-chat')
+    popUp.classList.add('open')
+    return
+}
+
+function closePopupNewGroupChat(){
+    let popUp= document.getElementById('popup-new-group-chat')
+    popUp.classList.remove('open')
+    return
+}

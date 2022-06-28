@@ -603,7 +603,9 @@ ul {
 
 .form-new-group-chat{
     width: 100%;
-    height: calc(100% - 110px);
+    height: calc(100% - 100px);
+    overflow-y:auto;
+    overflow-x:hidden;
 }
 
 .list-friend{
@@ -901,4 +903,33 @@ ul {
 
 .pop_up_close:hover{
     color: #fff;
+}
+
+.friend-check-box{
+    width: 100%;
+    height: 40px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.friend-check-box:hover{
+    background-color: #232932;
+}
+
+.input-check-box{
+    width: 30px;
+    height: 30px;
+    margin:5px;
+    box-sizing: border-box;
+}
+
+.input-check-box-text{
+    width: calc(100% - 40px);
+    height: 30px;
+    padding:5px;
+    text-align: left;
+    font-size: 20px;
+    font-family: sans-serif;
+    color: #fff;
+    opacity: 0.85;
 }

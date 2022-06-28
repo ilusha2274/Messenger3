@@ -63,7 +63,7 @@
                 <nav>
                     <div class="form-search">
                         <div class="new-group-chat">
-                            <a onclick="openPopupNewGroupChat()">
+                            <a href="/newgroupchat">
                                 <svg class="add-group-chat-icon">
                                     <use xlink:href="#add-group-chat"></use>
                                 </svg>
@@ -99,8 +99,11 @@
                 <div class="popup-new-group-chat__content">
                     <h1 class="new-friend-text">Создать группу</h1>
                     <form class="form-new-group-chat" method="post">
-                        <input type="text" class="input-new-friend" name="email" id="email" placeholder="Название группы">
+                        <input type="text" style="margin-bottom: 10px;" class="input-new-friend" name="nameChat" id="nameChat" placeholder="Название группы">
                         <div class="list-friend" id="list-friend"></div>
+                        <tr th:each="printFriend : ${printFriends}">
+                            <td th:insert="blocks/blockFriendsCheckBox :: blockFriendsCheckBox"></td>
+                        </tr>
                         <p id="exception-new-friend" class="exception-new-friend" th:text="${exception}"></p>
                         <button class="button-new-friend" type="submit">Create Chat</button>
                     </form>

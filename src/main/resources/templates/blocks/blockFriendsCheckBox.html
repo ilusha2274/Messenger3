@@ -1,0 +1,10 @@
+<div th:fragment="blockFriendsCheckBox" xmlns:th="http://www.thymeleaf.org">
+
+    <div class="friend-check-box">
+        <label style="width: 100%;height: 100%;display:flex;">
+            <input class="input-check-box" type="checkbox" name="idFriend" th:value="${printFriend.idUser2}">
+            <h6 class="input-check-box-text" th:text="${printFriend.nameFriend}"></h6>
+        </label>
+    </div>
+
+</div>

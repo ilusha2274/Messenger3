@@ -27,40 +27,49 @@ public class NewGroupChatController {
         this.userRepository = userRepository;
     }
 
-//    @GetMapping("/newgroupchat")
-//    public String printHewMessage(@AuthenticationPrincipal User user, Model model) {
-//
-////        List<PrintFriend> printFriends = userRepository.findListFriendsByUser(user);
-////
-////        model.addAttribute("printFriends", printFriends);
-////        model.addAttribute("activePage", "NEWGROUPCHAT");
-////        model.addAttribute("title", user.getName());
-//        model.addAttribute("newAdd", true);
-//
-//        return "redirect:/chat";
-//    }
+    @GetMapping("/newgroupchat")
+    public String printHewMessage(@AuthenticationPrincipal User user, Model model) {
 
-//    @PostMapping("/newgroupchat")
-//    public String newMessage(@RequestParam(value = "idChecked", required = false) List<String> nameFriend , String nameChat, @AuthenticationPrincipal User user, Model model) {
-//
-//        Chat newChat = chatRepository.addGroupChat(nameChat, "group", user);
-//
-//        if (nameFriend != null){
-//            for (String s : nameFriend) {
-//                User newUser = new User(Integer.parseInt(s));
-//                chatRepository.addUserToGroupChat(newUser, newChat);
-//            }
-//        }
-//
-//        model.addAttribute("activePage", "CHAT");
-//        model.addAttribute("title", user.getName());
-//        return "redirect:chat";
-//    }
-
-    @GetMapping(value = "/chat", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public Collection<PrintFriend> printListFriend(@AuthenticationPrincipal User user) {
         List<PrintFriend> printFriends = userRepository.findListFriendsByUser(user);
-        return printFriends;
+        ArrayList<Chat> chats = (ArrayList<Chat>) chatRepository.findListChatByUser(user);
+
+        model.addAttribute("printFriends", printFriends);
+        model.addAttribute("printChats", chats);
+        model.addAttribute("activePage", "CHAT");
+        model.addAttribute("title", user.getName());
+        model.addAttribute("active", false);
+        model.addAttribute("openPopup", true);
+
+        return "chat";
     }
+
+    @PostMapping("/newgroupchat")
+    public String newMessage(@RequestParam(value = "idFriend", required = false) List<String> nameFriend ,
+                             String nameChat, @AuthenticationPrincipal User user, Model model) {
+        //Переделать
+        if (nameChat.equals("")){
+            return "chat";
+        }
+
+        Chat newChat = chatRepository.addGroupChat(nameChat, "group", user);
+
+//        if (nameFriend != null){
+            for (String s : nameFriend) {
+                User newUser = new User(Integer.parseInt(s));
+                chatRepository.addUserToGroupChat(newUser, newChat);
+            }
+//        }
+
+        model.addAttribute("activePage", "CHAT");
+        model.addAttribute("title", user.getName());
+
+        return "redirect:/chat";
+    }
+
+//    @GetMapping(value = "/chat", produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseBody
+//    public Collection<PrintFriend> printListFriend(@AuthenticationPrincipal User user) {
+//        List<PrintFriend> printFriends = userRepository.findListFriendsByUser(user);
+//        return printFriends;
+//    }
 }

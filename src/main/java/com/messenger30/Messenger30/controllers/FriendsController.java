@@ -26,7 +26,7 @@ public class FriendsController {
     }
 
     @GetMapping("/friends")
-    public String printFriendsList(@AuthenticationPrincipal User user, String email, Model model) {
+    public String printFriendsList(@AuthenticationPrincipal User user, Model model) {
 
         List<PrintFriend> printFriends = userRepository.findListFriendsByUser(user);
 

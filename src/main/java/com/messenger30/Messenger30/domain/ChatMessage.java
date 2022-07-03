@@ -1,10 +1,4 @@
-package com.messenger30.Messenger30.websocket;
-
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.InputStream;
+package com.messenger30.Messenger30.domain;
 
 public class ChatMessage {
     private boolean haveFile;
@@ -18,13 +12,13 @@ public class ChatMessage {
     public ChatMessage() {
     }
 
-    public ChatMessage(String content, String time,String nameAuthor) {
+    public ChatMessage(String content, String time, String nameAuthor) {
         this.content = content;
         this.time = time;
         this.nameAuthor = nameAuthor;
     }
 
-    public ChatMessage(String nameAuthor,Integer userId, String content,Integer idChat,boolean haveFile) {
+    public ChatMessage(String nameAuthor, Integer userId, String content, Integer idChat, boolean haveFile) {
         this.content = content;
         this.nameAuthor = nameAuthor;
         this.userId = userId;
@@ -32,7 +26,7 @@ public class ChatMessage {
         this.haveFile = haveFile;
     }
 
-    public ChatMessage(String nameAuthor,Integer userId, String content,Integer idChat,boolean haveFile,String nameFile) {
+    public ChatMessage(String nameAuthor, Integer userId, String content, Integer idChat, boolean haveFile, String nameFile) {
         this.content = content;
         this.nameAuthor = nameAuthor;
         this.userId = userId;
@@ -40,25 +34,6 @@ public class ChatMessage {
         this.haveFile = haveFile;
         this.nameFile = nameFile;
     }
-
-//    public ChatMessage(String nameAuthor,Integer userId, String content,Integer idChat,
-//                       boolean haveFile,File file) {
-//        this.content = content;
-//        this.nameAuthor = nameAuthor;
-//        this.userId = userId;
-//        this.idChat = idChat;
-//        this.haveFile = haveFile;
-//        this.file = file;
-//    }
-
-//    public File getFile() {
-//        return file;
-//    }
-//
-//    public void setFile(File file) {
-//        this.file = file;
-//    }
-
 
     public String getNameFile() {
         return nameFile;

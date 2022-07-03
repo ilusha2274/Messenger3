@@ -1,8 +1,8 @@
 package com.messenger30.Messenger30.controllers;
 
-import com.messenger30.Messenger30.repository.Chat;
+import com.messenger30.Messenger30.domain.Chat;
+import com.messenger30.Messenger30.domain.User;
 import com.messenger30.Messenger30.repository.ChatRepository;
-import com.messenger30.Messenger30.repository.User;
 import com.messenger30.Messenger30.repository.UserRepository;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,6 @@ public class AddUserGroupChatController {
 
     @GetMapping("/addUserGroupChat")
     public String printAddUserGroupChat(@AuthenticationPrincipal User user, Model model) {
-
         model.addAttribute("activePage", "ADDUSERGROUPCHAT");
         model.addAttribute("title", user.getName());
 
@@ -32,19 +31,20 @@ public class AddUserGroupChatController {
 
     @PostMapping("/addUserGroupChat")
     public String addUserGroupChat(String nameChat, String emailUser, @AuthenticationPrincipal User user, Model model) {
-
         User newUser = userRepository.findUserByEmail(emailUser);
         Chat chat = chatRepository.findChatByName(nameChat, user);
 
         if (chat != null && newUser != null) {
-            chatRepository.addUserToGroupChat(newUser, chat);
+            chatRepository.addUserToGroupChat(newUser.getId(), chat);
             model.addAttribute("activePage", "CHAT");
             model.addAttribute("title", user.getName());
+
             return "redirect:chat";
         } else {
             model.addAttribute("activePage", "ADDUSERGROUPCHAT");
             model.addAttribute("exception", "чат или пользователь не найден");
             model.addAttribute("title", user.getName());
+
             return "addUserGroupChat";
         }
     }

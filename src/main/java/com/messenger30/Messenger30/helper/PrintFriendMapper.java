@@ -1,5 +1,6 @@
 package com.messenger30.Messenger30.helper;
 
+import com.messenger30.Messenger30.domain.PrintFriend;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

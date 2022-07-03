@@ -1,4 +1,4 @@
-package com.messenger30.Messenger30.repository;
+package com.messenger30.Messenger30.domain;
 
 import java.util.ArrayList;
 import java.util.List;

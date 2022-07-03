@@ -1,4 +1,4 @@
-package com.messenger30.Messenger30.repository;
+package com.messenger30.Messenger30.domain;
 
 import java.time.LocalDateTime;
 
@@ -22,7 +22,7 @@ public class Message {
         this.localDateTime = localDateTime;
     }
 
-    public Message(Integer idAuthor,String text,LocalDateTime localDateTime, String nameAuthor, Integer messageId, String nameFile){
+    public Message(Integer idAuthor, String text, LocalDateTime localDateTime, String nameAuthor, Integer messageId, String nameFile) {
         this.idAuthor = idAuthor;
         this.text = text;
         this.localDateTime = localDateTime;

@@ -19,12 +19,12 @@
         <div class="modal-body p-5 pt-0">
             <form method="post">
                 <div class="form-floating mb-3">
-                    <input type="text" name="email" class="form-control rounded-4" id="floatingInput" placeholder="name@example.com">
+                    <input th:attr="value=${user.email}" type="text" name="email" class="form-control rounded-4" id="floatingInput" placeholder="name@example.com">
                     <label for="floatingInput">Email address</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" name="name" class="form-control rounded-4" id="name" placeholder="name">
+                    <input th:attr="value=${user.name}" type="text" name="name" class="form-control rounded-4" id="name" placeholder="name">
                     <label for="floatingInput">User name</label>
                 </div>
 

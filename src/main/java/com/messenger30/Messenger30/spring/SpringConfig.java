@@ -2,10 +2,7 @@ package com.messenger30.Messenger30.spring;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.messenger30.Messenger30.repository.ChatRepository;
-import com.messenger30.Messenger30.repository.DatabaseChatRepository;
-import com.messenger30.Messenger30.repository.DatabaseUserRepository;
-import com.messenger30.Messenger30.repository.UserRepository;
+import com.messenger30.Messenger30.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -35,6 +32,12 @@ import javax.sql.DataSource;
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
 
+    @Value("${access.key.id}")
+    private String accessKey;
+
+    @Value("${secret.access.key}")
+    private String secretKey;
+
     private final ApplicationContext applicationContext;
 
     @Autowired
@@ -61,6 +64,11 @@ public class SpringConfig implements WebMvcConfigurer {
     @Bean
     public UserDetailsService userDetailsService(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder) {
         return new DatabaseUserRepository(jdbcTemplate, passwordEncoder, transactionTemplate());
+    }
+
+    @Bean
+    public IMessengerService messengerService(ChatRepository chatRepository, UserRepository userRepository, AWSCredentials credentials) {
+        return new MessengerService(chatRepository, userRepository, credentials);
     }
 
 //    @Bean
@@ -111,14 +119,8 @@ public class SpringConfig implements WebMvcConfigurer {
         return multipartResolver;
     }
 
-    @Value("${access.key.id}")
-    private String accessKey;
-
-    @Value("${secret.access.key}")
-    private String secretKey;
-
     @Bean
-    public AWSCredentials credentials(){
+    public AWSCredentials credentials() {
         AWSCredentials credentials = new BasicAWSCredentials(
                 accessKey,
                 secretKey
@@ -149,6 +151,7 @@ public class SpringConfig implements WebMvcConfigurer {
     @Bean
     public AuthenticationManager authenticationManager() {
         return new AuthenticationManager() {
+
             @Override
             public Authentication authenticate(Authentication authentication) throws AuthenticationException {
                 return authentication;

@@ -1,9 +1,7 @@
 package com.messenger30.Messenger30.repository;
 
-import com.messenger30.Messenger30.exception.PasswordMismatchException;
-import com.messenger30.Messenger30.exception.WrongEmailException;
-import com.messenger30.Messenger30.exception.WrongLoginPasswordException;
-import com.messenger30.Messenger30.helper.PrintFriend;
+import com.messenger30.Messenger30.domain.PrintFriend;
+import com.messenger30.Messenger30.domain.User;
 import com.messenger30.Messenger30.helper.PrintFriendMapper;
 import com.messenger30.Messenger30.helper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +26,12 @@ public class DatabaseUserRepository implements UserRepository, UserDetailsServic
         this.transactionTemplate = transactionTemplate;
     }
 
-    public List<User> index() {
-        return jdbcTemplate.query("SELECT * FROM users", new UserMapper());
-    }
+//    public List<User> index() {
+//        return jdbcTemplate.query("SELECT * FROM users", new UserMapper());
+//    }
 
-    //Перестало выводится сообщение об ошибке из-за блока try catch
     @Override
-    public User addUser(User user, String twoPassword) throws PasswordMismatchException, WrongEmailException {
+    public User addUser(User user) {
 
         transactionTemplate.execute(status -> {
 
@@ -50,6 +47,7 @@ public class DatabaseUserRepository implements UserRepository, UserDetailsServic
 
             return user;
         });
+
         return user;
     }
 
@@ -58,34 +56,6 @@ public class DatabaseUserRepository implements UserRepository, UserDetailsServic
         jdbcTemplate.update("DELETE FROM users WHERE user_email=?", email);
     }
 
-    @Override
-    public boolean findEmailUser(String email) throws WrongEmailException {
-
-        if (findUserByEmail(email) != null) {
-            throw new WrongEmailException("email занят");
-        }
-        return false;
-
-    }
-
-    @Override
-    public boolean checkPassword(String password, String twoPassword) throws PasswordMismatchException {
-        if (password.equals(twoPassword)) {
-            return true;
-        } else {
-            throw new PasswordMismatchException("Пароли не совпадают");
-        }
-    }
-
-    @Override
-    public User logInUser(String email, String password) throws WrongLoginPasswordException {
-        User user = findUserByEmail(email);
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-            return user;
-        } else {
-            throw new WrongLoginPasswordException("Неверное имя пользователя или пароль");
-        }
-    }
 
     @Override
     public User findUserByEmail(String email) {
@@ -96,24 +66,26 @@ public class DatabaseUserRepository implements UserRepository, UserDetailsServic
 
     @Override
     public User findUserById(int id) {
+
         return jdbcTemplate.query("SELECT * FROM users WHERE user_id=?", new Object[]{id},
                 new UserMapper()).stream().findAny().orElse(null);
     }
 
     @Override
     public User loadUserByUsername(String s) throws UsernameNotFoundException {
+
         return findUserByEmail(s);
     }
 
     @Override
-    public void addNewFriends(User user1, User user2) {
-
+    public void addNewFriend(User user1, User user2) {
         jdbcTemplate.update("INSERT INTO users_users (user1_id, user2_id) VALUES(?,?)",
                 user1.getId(), user2.getId());
     }
 
     @Override
     public List<PrintFriend> findListFriendsByUser(User user) {
+
         return jdbcTemplate.query(" select u.user_name, uc.chat_id, u.user_id " +
                         " from users u  " +
                         " join users_users uu  " +
@@ -130,8 +102,9 @@ public class DatabaseUserRepository implements UserRepository, UserDetailsServic
     }
 
     @Override
-    public boolean alreadyFriends (int user1, int user2){
-        int res = jdbcTemplate.queryForObject("SELECT count(*) FROM users_users WHERE user1_id = ? AND user2_id = ?",Integer.class , user1, user2);
+    public boolean isAlreadyFriends(int user1, int user2) {
+        int res = jdbcTemplate.queryForObject("SELECT count(*) FROM users_users WHERE user1_id = ? AND user2_id = ?", Integer.class, user1, user2);
+
         return res > 0;
     }
 }

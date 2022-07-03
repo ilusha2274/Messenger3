@@ -1,4 +1,4 @@
-package com.messenger30.Messenger30.repository;
+package com.messenger30.Messenger30.domain;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +16,26 @@ public class User implements UserDetails {
     private String password;
     private boolean enabled;
     private String role;
+
+    public User(int id, String name, String email, String password, boolean enabled) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.enabled = enabled;
+        role = "USER";
+    }
+
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        enabled = true;
+        role = "USER";
+    }
+
+    public User() {
+    }
 
     private static final String ROLE_USER = "USER";
 
@@ -71,23 +91,6 @@ public class User implements UserDetails {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public User(int id, String name, String email, String password, boolean enabled) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.enabled = enabled;
-        role = "USER";
-    }
-
-    public User(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        enabled = true;
-        role = "USER";
     }
 
     @Override

@@ -603,7 +603,7 @@ ul {
 
 .form-new-group-chat{
     width: 100%;
-    height: calc(100% - 100px);
+    height: calc(100% - 110px);
     overflow-y:auto;
     overflow-x:hidden;
 }

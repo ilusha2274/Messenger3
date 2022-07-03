@@ -1,6 +1,6 @@
 package com.messenger30.Messenger30.controllers;
 
-import com.messenger30.Messenger30.repository.User;
+import com.messenger30.Messenger30.domain.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,33 +13,29 @@ public class BlockMenuController {
 
     @GetMapping("/home")
     public String printHome(@AuthenticationPrincipal User user, Model model) {
-
-        model.addAttribute("title", user.getName());
+        model.addAttribute("user", user);
 
         return "home";
     }
 
     @GetMapping("/profile")
-    public String printProfile(@AuthenticationPrincipal User user,Model model) {
-
+    public String printProfile(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("activePage", "PROFILE");
-        model.addAttribute("title", user.getName());
+        model.addAttribute("user", user);
 
         return "profile";
     }
 
     @GetMapping("/settings")
-    public String printSettings(@AuthenticationPrincipal User user,Model model) {
-
+    public String printSettings(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("activePage", "SETTINGS");
-        model.addAttribute("title", user.getName());
+        model.addAttribute("user", user);
 
         return "settings";
     }
 
     @GetMapping("/exit")
-    public String printExit(HttpSession session) {
-
+    public String Exit(HttpSession session) {
         session.invalidate();
 
         return "redirect:login";

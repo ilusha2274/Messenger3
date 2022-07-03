@@ -1,5 +1,8 @@
 package com.messenger30.Messenger30.repository;
 
+import com.messenger30.Messenger30.domain.Chat;
+import com.messenger30.Messenger30.domain.Message;
+import com.messenger30.Messenger30.domain.User;
 import com.messenger30.Messenger30.helper.ChatMapper;
 import com.messenger30.Messenger30.helper.MessageMapper;
 import com.messenger30.Messenger30.helper.PrintChatMapper;
@@ -13,7 +16,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class DatabaseChatRepository implements ChatRepository{
+public class DatabaseChatRepository implements ChatRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final TransactionTemplate transactionTemplate;
@@ -63,6 +66,7 @@ public class DatabaseChatRepository implements ChatRepository{
     // Не используется. Надо поменять
     @Override
     public Chat getByNumberChat(int i) {
+
         return jdbcTemplate.query("SELECT * FROM chats WHERE chat_id=?",
                 new Object[]{i},
                 new PrintChatMapper()).stream().findAny().orElse(null);
@@ -70,24 +74,26 @@ public class DatabaseChatRepository implements ChatRepository{
 
     @Override
     public Chat addChat(List<User> users, String chatType) {
-
         Chat chat = new Chat();
 
         transactionTemplate.execute(status -> {
             int id = jdbcTemplate.queryForObject("INSERT INTO chats (chat_type) VALUES(?) RETURNING chat_id",
                     Integer.class, chatType);
+
             chat.setChatId(id);
+
             for (User user : users) {
                 jdbcTemplate.update("INSERT INTO users_chats (user_id,chat_id) VALUES(?,?)", user.getId(), id);
             }
+
             return id;
         });
+
         return chat;
     }
 
     @Override
     public Message addMessageToChat(String text, User user, int chatId) {
-
         LocalDateTime localDateTime = LocalDateTime.now();
         Message message = new Message(user, text, localDateTime);
 
@@ -100,9 +106,11 @@ public class DatabaseChatRepository implements ChatRepository{
                         text, chatId, user.getId(), java.sql.Timestamp.valueOf(localDateTime));
 
                 jdbcTemplate.update("UPDATE chats SET chat_last_message=? WHERE chat_id=?", id, chatId);
+
                 message.setMessageId(id);
             }
         });
+
         return message;
     }
 
@@ -117,17 +125,20 @@ public class DatabaseChatRepository implements ChatRepository{
     }
 
     @Override
-    public Chat addGroupChat(String nameChat, String chatType, User user) {
-
+    public Chat addGroupChat(String nameChat, User user) {
         Chat chat = new Chat();
 
         transactionTemplate.execute(status -> {
             int id = jdbcTemplate.queryForObject("INSERT INTO chats (chat_type,name_chat) VALUES(?,?) RETURNING chat_id",
-                    Integer.class, chatType, nameChat);
+                    Integer.class, "group", nameChat);
+
             chat.setChatId(id);
+
             jdbcTemplate.update("INSERT INTO users_chats (user_id,chat_id) VALUES(?,?)", user.getId(), id);
+
             return id;
         });
+
         return chat;
     }
 
@@ -143,8 +154,8 @@ public class DatabaseChatRepository implements ChatRepository{
     }
 
     @Override
-    public void addUserToGroupChat(User user, Chat chat) {
-        jdbcTemplate.update("INSERT INTO users_chats (user_id,chat_id) VALUES(?,?)", user.getId(), chat.getChatId());
+    public void addUserToGroupChat(int userID, Chat chat) {
+        jdbcTemplate.update("INSERT INTO users_chats (user_id,chat_id) VALUES(?,?)", userID, chat.getChatId());
     }
 
     @Override
@@ -157,6 +168,7 @@ public class DatabaseChatRepository implements ChatRepository{
 
     @Override
     public Chat searchChatBetweenUsers(User user1, User user2) {
+
         return jdbcTemplate.query("select u.user_name AS chatname, uc.chat_id, u.user_id\n" +
                         "                         from users u  \n" +
                         "                         join users_users uu  \n" +
@@ -169,38 +181,41 @@ public class DatabaseChatRepository implements ChatRepository{
                         "                         join users_chats uc2 \n" +
                         "                         on uu.user2_id = uc2.user_id and uc.chat_id=uc2.chat_id \n" +
                         "                         where uu.user1_id = ? and u.user_id = ? OR uu.user1_id = ? and u.user_id = ?",
-                new ChatMapper(), user1.getId(), user2.getId(),user2.getId(), user1.getId()).stream().findAny().orElse(null);
+                new ChatMapper(), user1.getId(), user2.getId(), user2.getId(), user1.getId()).stream().findAny().orElse(null);
     }
 
     @Override
-    public List<User> findListUserInChat (int chatID){
+    public List<User> findListUserInChat(int chatID) {
+
         return jdbcTemplate.query(" SELECT users.user_id, users.user_name, users.user_email, users.user_password, users.enabled " +
                 " FROM users_chats " +
                 " JOIN users " +
                 " ON users_chats.user_id = users.user_id " +
-                " WHERE users_chats.chat_id = ? ",new UserMapper(), chatID);
+                " WHERE users_chats.chat_id = ? ", new UserMapper(), chatID);
     }
 
     @Override
     public List<Message> findFirst20(int chatId) {
+
         return jdbcTemplate.query(" SELECT messages.date_message, messages.user_id, messages.text_message, users.user_name, messages.message_id, messages.name_file " +
                 " FROM messages " +
                 " JOIN users " +
                 " ON messages.user_id = users.user_id " +
-                " WHERE chat_id=? ORDER BY message_id DESC LIMIT 20 ",new MessageMapper(),chatId);
+                " WHERE chat_id=? ORDER BY message_id DESC LIMIT 20 ", new MessageMapper(), chatId);
     }
 
     @Override
     public List<Message> next20(int chatId, int messageId) {
+
         return jdbcTemplate.query(" SELECT messages.date_message, messages.user_id, messages.text_message, users.user_name, messages.message_id, messages.name_file " +
                 " FROM messages " +
                 " JOIN users " +
                 " ON messages.user_id = users.user_id " +
-                " WHERE chat_id=? AND message_id < ? ORDER BY message_id DESC LIMIT 20 ",new MessageMapper(),chatId,messageId);
+                " WHERE chat_id=? AND message_id < ? ORDER BY message_id DESC LIMIT 20 ", new MessageMapper(), chatId, messageId);
     }
 
     @Override
-    public void uploadFileInMessage (String nameFile, int idMessage){
+    public void uploadFileInMessage(String nameFile, int idMessage) {
         jdbcTemplate.update("UPDATE messages SET name_file=? WHERE message_id=?", nameFile, idMessage);
     }
 }

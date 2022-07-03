@@ -1,4 +1,4 @@
-package com.messenger30.Messenger30.helper;
+package com.messenger30.Messenger30.domain;
 
 public class PrintMessage {
     private boolean author;
@@ -9,7 +9,7 @@ public class PrintMessage {
     private String nameFile;
     private boolean file;
 
-    public PrintMessage(boolean author, String message, String date,String nameAuthor, Integer messageId,boolean file) {
+    public PrintMessage(boolean author, String message, String date, String nameAuthor, Integer messageId, boolean file) {
         this.author = author;
         this.message = message;
         this.date = date;

@@ -8,11 +8,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LogInController {
 
+    @GetMapping("/")
+    public String redirectLogin() {
+        return "redirect:/login";
+    }
+
     @GetMapping("/login")
     public String printLogin(String error, Model model) {
         if (error != null) {
             model.addAttribute("exception", "Неверное имя пользователя или пароль");
         }
+
         return "login";
     }
 

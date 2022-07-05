@@ -150,6 +150,9 @@ public class MessengerService implements IMessengerService {
         if (user.getName().equals(""))
             throw new WrongEmailException("Введите имя пользователя!");
 
+        if (user.getPassword().equals(""))
+            throw new PasswordMismatchException("Пароль не может быть пустым!");
+
         if (userRepository.findUserByEmail(user.getEmail()) != null)
             throw new WrongEmailException("email занят");
 

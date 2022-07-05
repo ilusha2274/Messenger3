@@ -249,7 +249,7 @@ ul {
 
 .search-icon{
     position: absolute;
-    right: 5px;
+    right: 45px;
     width: 30px;
     height: 30px;
     fill: #232932;
@@ -257,6 +257,19 @@ ul {
 }
 
 .search-icon:hover{
+    fill: #748198;
+}
+
+.more-icon{
+    position: absolute;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    fill: #232932;
+    cursor: pointer;
+}
+
+.more-icon:hover{
     fill: #748198;
 }
 
@@ -675,15 +688,18 @@ ul {
 .chat{
     padding-left:10px;
     height: 60px;
+    width: 100%;
     border-radius: 10px;
     font-family: Verdana;
     color:#748198;
-    text-decoration: none;
+    background-color: rgba(28, 32, 40, 1.0);
     font-size:15px;
     display: flex;
     text-align: left;
     line-height: 40px;
     position:relative;
+    border: 0px;
+    cursor: pointer;
 }
 
 .chat:hover{
@@ -932,4 +948,12 @@ ul {
     font-family: sans-serif;
     color: #fff;
     opacity: 0.85;
+}
+
+.chat-name{
+    height:100%;
+    padding: 5px;
+    color: #fff;
+    font-family: sans-serif;
+    font-size: 20px;
 }

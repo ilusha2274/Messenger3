@@ -1,10 +1,10 @@
 package com.messenger30.Messenger30.controllers;
 
 import com.amazonaws.auth.AWSCredentials;
-import com.messenger30.Messenger30.domain.User;
-import com.messenger30.Messenger30.domain.PrintMessage;
-import com.messenger30.Messenger30.repository.IMessengerService;
 import com.messenger30.Messenger30.domain.ChatMessage;
+import com.messenger30.Messenger30.domain.PrintMessage;
+import com.messenger30.Messenger30.domain.User;
+import com.messenger30.Messenger30.services.IMessengerService;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -54,7 +54,7 @@ public class ChatController {
         if (messengerService.isUserInChat(id, user)) {
             model.addAttribute("printMessages", messengerService.returnFirst20Messages(id, user));
             model.addAttribute("active", true);
-            model.addAttribute("chatID", id);
+            model.addAttribute("chat", messengerService.findChatById(user, id));
         }
 
         return "chat";

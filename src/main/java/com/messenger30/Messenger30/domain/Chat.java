@@ -11,6 +11,7 @@ public class Chat {
     private String nameChat;
     private String dateLastMessage;
     private String textLastMessage;
+    private String chatType;
 
     public Chat() {
     }
@@ -21,6 +22,13 @@ public class Chat {
         this.dateLastMessage = dateLastMessage;
         this.textLastMessage = textLastMessage;
     }
+
+    public Chat(int chatId, String nameChat, String chatType) {
+        this.chatId = chatId;
+        this.nameChat = nameChat;
+        this.chatType = chatType;
+    }
+
 
     public String getDateLastMessage() {
         return dateLastMessage;
@@ -80,5 +88,13 @@ public class Chat {
 
     public void setNameChat(String nameChat) {
         this.nameChat = nameChat;
+    }
+
+    public String getChatType() {
+        return chatType;
+    }
+
+    public void setChatType(String chatType) {
+        this.chatType = chatType;
     }
 }

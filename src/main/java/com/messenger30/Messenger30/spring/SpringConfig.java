@@ -3,6 +3,8 @@ package com.messenger30.Messenger30.spring;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.messenger30.Messenger30.repository.*;
+import com.messenger30.Messenger30.services.IMessengerService;
+import com.messenger30.Messenger30.services.MessengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;

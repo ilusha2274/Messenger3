@@ -1,9 +1,9 @@
 package com.messenger30.Messenger30.controllers;
 
 import com.messenger30.Messenger30.domain.User;
-import com.messenger30.Messenger30.exception.UserNotFoundException;
-import com.messenger30.Messenger30.exception.WrongAlreadyFriends;
-import com.messenger30.Messenger30.repository.IMessengerService;
+import com.messenger30.Messenger30.exceptions.UserNotFoundException;
+import com.messenger30.Messenger30.exceptions.WrongAlreadyFriends;
+import com.messenger30.Messenger30.services.IMessengerService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

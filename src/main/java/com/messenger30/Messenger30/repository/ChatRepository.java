@@ -9,7 +9,7 @@ import java.util.List;
 public interface ChatRepository {
     List<Chat> findListChatByUser(User user);
 
-    Chat getByNumberChat(int i);
+    Chat findChatById(int id);
 
     Chat addChat(List<User> users, String chatType);
 

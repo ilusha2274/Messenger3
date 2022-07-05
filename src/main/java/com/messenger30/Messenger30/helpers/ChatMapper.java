@@ -1,4 +1,4 @@
-package com.messenger30.Messenger30.helper;
+package com.messenger30.Messenger30.helpers;
 
 import com.messenger30.Messenger30.domain.Chat;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,9 +10,7 @@ public class ChatMapper implements RowMapper<Chat> {
 
     @Override
     public Chat mapRow(ResultSet resultSet, int i) throws SQLException {
-        Chat chat = new Chat(resultSet.getString("chatname"),
-                resultSet.getInt("chat_id"), "", "");
 
-        return chat;
+        return new Chat(resultSet.getInt("chat_id"), resultSet.getString("chatname"), resultSet.getString("chat_type"));
     }
 }

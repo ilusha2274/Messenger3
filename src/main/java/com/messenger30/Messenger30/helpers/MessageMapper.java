@@ -1,4 +1,4 @@
-package com.messenger30.Messenger30.helper;
+package com.messenger30.Messenger30.helpers;
 
 import com.messenger30.Messenger30.domain.Message;
 import org.springframework.jdbc.core.RowMapper;

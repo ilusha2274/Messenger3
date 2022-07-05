@@ -3,10 +3,10 @@ package com.messenger30.Messenger30.repository;
 import com.messenger30.Messenger30.domain.Chat;
 import com.messenger30.Messenger30.domain.Message;
 import com.messenger30.Messenger30.domain.User;
-import com.messenger30.Messenger30.helper.ChatMapper;
-import com.messenger30.Messenger30.helper.MessageMapper;
-import com.messenger30.Messenger30.helper.PrintChatMapper;
-import com.messenger30.Messenger30.helper.UserMapper;
+import com.messenger30.Messenger30.helpers.ChatMapper;
+import com.messenger30.Messenger30.helpers.MessageMapper;
+import com.messenger30.Messenger30.helpers.PrintChatMapper;
+import com.messenger30.Messenger30.helpers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.TransactionStatus;
@@ -63,13 +63,11 @@ public class DatabaseChatRepository implements ChatRepository {
                 new PrintChatMapper(), user.getId(), user.getId(), user.getId(), user.getId());
     }
 
-    // Не используется. Надо поменять
     @Override
-    public Chat getByNumberChat(int i) {
+    public Chat findChatById(int id) {
 
-        return jdbcTemplate.query("SELECT * FROM chats WHERE chat_id=?",
-                new Object[]{i},
-                new PrintChatMapper()).stream().findAny().orElse(null);
+        return (Chat) jdbcTemplate.query("SELECT chats.chat_id, chats.name_chat AS chatname, chats.chat_type FROM chats WHERE chat_id=?",
+                new ChatMapper(), id).stream().findAny().orElse(null);
     }
 
     @Override
@@ -144,7 +142,7 @@ public class DatabaseChatRepository implements ChatRepository {
 
     @Override
     public Chat findChatByName(String nameChat, User user) {
-        return (Chat) jdbcTemplate.query("SELECT chats.chat_id, chats.name_chat AS chatname " +
+        return (Chat) jdbcTemplate.query("SELECT chats.chat_id, chats.name_chat AS chatname, chats.chat_type " +
                         " FROM chats " +
                         " JOIN users_chats " +
                         " ON chats.chat_id = users_chats.chat_id " +
@@ -161,7 +159,11 @@ public class DatabaseChatRepository implements ChatRepository {
     @Override
     public boolean findUserInChat(Integer chatID, User user) {
 
-        return jdbcTemplate.query("SELECT users_chats.chat_id, user_id AS chatname FROM users_chats WHERE chat_id=? AND user_id= ?",
+        return jdbcTemplate.query("SELECT users_chats.chat_id, user_id AS chatname, chats.chat_type \n" +
+                        " FROM users_chats " +
+                        " JOIN chats " +
+                        " ON users_chats.chat_id = chats.chat_id " +
+                        " WHERE users_chats.chat_id = ? AND user_id = ?",
                 new ChatMapper(), chatID, user.getId()).stream().findAny().orElse(null) != null;
 
     }
@@ -169,7 +171,7 @@ public class DatabaseChatRepository implements ChatRepository {
     @Override
     public Chat searchChatBetweenUsers(User user1, User user2) {
 
-        return jdbcTemplate.query("select u.user_name AS chatname, uc.chat_id, u.user_id\n" +
+        return jdbcTemplate.query("select u.user_name AS chatname, uc.chat_id, u.user_id, chats.chat_type\n" +
                         "                         from users u  \n" +
                         "                         join users_users uu  \n" +
                         "                         on u.user_id = uu.user2_id \n" +

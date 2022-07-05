@@ -2,8 +2,8 @@ package com.messenger30.Messenger30.repository;
 
 import com.messenger30.Messenger30.domain.PrintFriend;
 import com.messenger30.Messenger30.domain.User;
-import com.messenger30.Messenger30.helper.PrintFriendMapper;
-import com.messenger30.Messenger30.helper.UserMapper;
+import com.messenger30.Messenger30.helpers.PrintFriendMapper;
+import com.messenger30.Messenger30.helpers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,4 +1,4 @@
-package com.messenger30.Messenger30.repository;
+package com.messenger30.Messenger30.services;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
@@ -10,8 +10,9 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.messenger30.Messenger30.domain.*;
-import com.messenger30.Messenger30.exception.*;
-import com.messenger30.Messenger30.domain.ChatMessage;
+import com.messenger30.Messenger30.exceptions.*;
+import com.messenger30.Messenger30.repository.ChatRepository;
+import com.messenger30.Messenger30.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.util.HtmlUtils;
 
@@ -126,6 +127,25 @@ public class MessengerService implements IMessengerService {
         for (int id : idFriends) {
             chatRepository.addUserToGroupChat(id, newChat);
         }
+    }
+
+    @Override
+    public Chat findChatById(User user, int id) {
+        Chat chat = chatRepository.findChatById(id);
+
+        if (chat.getChatType().equals("saved")) {
+            chat.setNameChat("saved");
+        }
+
+        if (chat.getChatType().equals("private")) {
+            List<User> users = chatRepository.findListUserInChat(id);
+            if (users.get(0).getId() == user.getId())
+                chat.setNameChat(users.get(1).getName());
+            else
+                chat.setNameChat(users.get(0).getName());
+        }
+
+        return chat;
     }
 
     private void addChat(User user) {

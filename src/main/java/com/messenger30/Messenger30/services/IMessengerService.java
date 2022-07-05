@@ -1,10 +1,6 @@
-package com.messenger30.Messenger30.repository;
+package com.messenger30.Messenger30.services;
 
-import com.messenger30.Messenger30.domain.Chat;
-import com.messenger30.Messenger30.domain.PrintFriend;
-import com.messenger30.Messenger30.domain.PrintMessage;
-import com.messenger30.Messenger30.domain.User;
-import com.messenger30.Messenger30.domain.ChatMessage;
+import com.messenger30.Messenger30.domain.*;
 
 import java.util.List;
 
@@ -29,4 +25,6 @@ public interface IMessengerService {
     List<User> findListUserInChat(int chatId);
 
     void addGroupChat(List<Integer> idFriends, User user, String nameChat);
+
+    Chat findChatById(User user, int id);
 }

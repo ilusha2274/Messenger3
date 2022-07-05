@@ -4,15 +4,18 @@
         <!--верхняя панель-->
         <nav>
             <div class="form-search">
-                <div class="delete-chat">
-                    <svg class="trash-can-icon-naw">
-                        <use xlink:href="#trash-can"></use>
-                    </svg>
-                    <div class="prompt-delete-chat">Удалить чат</div>
-                </div>
-                <input class="input-search" placeholder="Search">
+                <div class="chat-name" th:text="${chat.nameChat}"></div>
+<!--                <div class="delete-chat">-->
+<!--                    <svg class="trash-can-icon-naw">-->
+<!--                        <use xlink:href="#trash-can"></use>-->
+<!--                    </svg>-->
+<!--                    <div class="prompt-delete-chat">Удалить чат</div>-->
+<!--                </div>-->
                 <svg class="search-icon">
                     <use xlink:href="#search"></use>
+                </svg>
+                <svg class="more-icon">
+                    <use xlink:href="#more"></use>
                 </svg>
             </div>
         </nav>
@@ -31,7 +34,7 @@
 
         <!--поле для ввода сообщения-->
         <div class="typing-area-border">
-            <input id = "chatID" type="hidden" th:attr="value=${chatID}">
+            <input id = "chatID" type="hidden" th:attr="value=${chat.chatId}">
             <input id = "name" type="hidden" th:attr="value=${user.name}">
             <input id = "userId" type="hidden" th:attr="value=${user.id}">
 

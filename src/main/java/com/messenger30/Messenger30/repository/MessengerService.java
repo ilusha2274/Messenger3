@@ -65,7 +65,7 @@ public class MessengerService implements IMessengerService {
 
     @Override
     public void registerUser(User user, String twoPassword) {
-        if (isDataValidation(user.getEmail(), user.getPassword(), twoPassword)) {
+        if (isDataValidation(user, twoPassword)) {
             userRepository.addUser(user);
 
             addChat(user);
@@ -143,11 +143,17 @@ public class MessengerService implements IMessengerService {
         chatRepository.addChat(users, "private");
     }
 
-    private boolean isDataValidation(String email, String password, String twoPassword) {
-        if (userRepository.findUserByEmail(email) != null)
+    private boolean isDataValidation(User user, String twoPassword) {
+        if (user.getEmail().equals(""))
+            throw new WrongEmailException("Введите email!");
+
+        if (user.getName().equals(""))
+            throw new WrongEmailException("Введите имя пользователя!");
+
+        if (userRepository.findUserByEmail(user.getEmail()) != null)
             throw new WrongEmailException("email занят");
 
-        if (!password.equals(twoPassword))
+        if (!user.getPassword().equals(twoPassword))
             throw new PasswordMismatchException("Пароли не совпадают");
 
         return true;

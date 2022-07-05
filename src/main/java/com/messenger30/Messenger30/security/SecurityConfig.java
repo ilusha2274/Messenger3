@@ -31,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().loginPage("/login").usernameParameter("email").permitAll()
                 .defaultSuccessUrl("/home")
+                .failureForwardUrl("/fail_login")
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/exit", "POST"))
                 .invalidateHttpSession(true)

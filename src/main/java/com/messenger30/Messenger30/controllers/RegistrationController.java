@@ -43,7 +43,7 @@ public class RegistrationController {
 
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (WrongEmailException | PasswordMismatchException e) {
+        } catch (RuntimeException e) {
             model.addAttribute("exception", e.getMessage());
 
             return "registration";

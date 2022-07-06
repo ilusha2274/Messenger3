@@ -152,8 +152,8 @@ public class DatabaseChatRepository implements ChatRepository {
     }
 
     @Override
-    public void addUserToGroupChat(int userID, Chat chat) {
-        jdbcTemplate.update("INSERT INTO users_chats (user_id,chat_id) VALUES(?,?)", userID, chat.getChatId());
+    public void addUserToGroupChat(int userID, int chatID) {
+        jdbcTemplate.update("INSERT INTO users_chats (user_id,chat_id) VALUES(?,?)", userID, chatID);
     }
 
     @Override

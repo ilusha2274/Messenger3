@@ -107,4 +107,14 @@ public class DatabaseUserRepository implements UserRepository, UserDetailsServic
 
         return res > 0;
     }
+
+    @Override
+    public boolean findUserInChat(User user, int chatID) {
+
+        int res = jdbcTemplate.queryForObject("SELECT count(*) FROM users_chats " +
+                " WHERE user_id = ? " +
+                " AND chat_id = ? ", Integer.class, user.getId(), chatID);
+
+        return res > 0;
+    }
 }

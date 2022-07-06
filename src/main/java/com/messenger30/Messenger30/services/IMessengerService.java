@@ -27,4 +27,6 @@ public interface IMessengerService {
     void addGroupChat(List<Integer> idFriends, User user, String nameChat);
 
     Chat findChatById(User user, int id);
+
+    void addUserInGroupChat(String emailUser, int chatId);
 }

@@ -21,7 +21,7 @@ public interface ChatRepository {
 
     Chat findChatByName(String nameChat, User user);
 
-    void addUserToGroupChat(int userId, Chat chat);
+    void addUserToGroupChat(int userId, int chatID);
 
     boolean findUserInChat(Integer chatID, User user);
 

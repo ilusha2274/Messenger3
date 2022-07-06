@@ -1,52 +1,63 @@
 package com.messenger30.Messenger30.controllers;
 
-import com.messenger30.Messenger30.domain.Chat;
 import com.messenger30.Messenger30.domain.User;
-import com.messenger30.Messenger30.repository.ChatRepository;
-import com.messenger30.Messenger30.repository.UserRepository;
+import com.messenger30.Messenger30.services.IMessengerService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class AddUserGroupChatController {
 
-    private final ChatRepository chatRepository;
-    private final UserRepository userRepository;
+    private final IMessengerService messengerService;
 
-    public AddUserGroupChatController(ChatRepository chatRepository, UserRepository userRepository) {
-        this.chatRepository = chatRepository;
-        this.userRepository = userRepository;
+    public AddUserGroupChatController(IMessengerService messengerService) {
+        this.messengerService = messengerService;
     }
 
-    @GetMapping("/addUserGroupChat")
-    public String printAddUserGroupChat(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("activePage", "ADDUSERGROUPCHAT");
-        model.addAttribute("title", user.getName());
+    @GetMapping("chat/{id}/addUser")
+    public String printPopupAddUserInChat(@PathVariable Integer id, @AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
+        model.addAttribute("activePage", "CHAT");
+        model.addAttribute("printChats", messengerService.findListChatByUser(user));
+        model.addAttribute("active", false);
 
-        return "addUserGroupChat";
-    }
-
-    @PostMapping("/addUserGroupChat")
-    public String addUserGroupChat(String nameChat, String emailUser, @AuthenticationPrincipal User user, Model model) {
-        User newUser = userRepository.findUserByEmail(emailUser);
-        Chat chat = chatRepository.findChatByName(nameChat, user);
-
-        if (chat != null && newUser != null) {
-            chatRepository.addUserToGroupChat(newUser.getId(), chat);
-            model.addAttribute("activePage", "CHAT");
-            model.addAttribute("title", user.getName());
-
-            return "redirect:chat";
-        } else {
-            model.addAttribute("activePage", "ADDUSERGROUPCHAT");
-            model.addAttribute("exception", "чат или пользователь не найден");
-            model.addAttribute("title", user.getName());
-
-            return "addUserGroupChat";
+        if (messengerService.isUserInChat(id, user)) {
+            model.addAttribute("printMessages", messengerService.returnFirst20Messages(id, user));
+            model.addAttribute("active", true);
+            model.addAttribute("chat", messengerService.findChatById(user, id));
+            model.addAttribute("listUserInChat", messengerService.findListUserInChat(id));
+            model.addAttribute("openPopup2", true);
         }
+
+        return "chat";
+    }
+
+    @PostMapping("chat/{id}/addUser")
+    public String addUserInChat(@PathVariable Integer id, @AuthenticationPrincipal User user, String newUserEmail, Model model) {
+        try {
+            messengerService.addUserInGroupChat(newUserEmail, id);
+        } catch (RuntimeException e) {
+            model.addAttribute("exception", e.getMessage());
+        }
+
+        model.addAttribute("user", user);
+        model.addAttribute("activePage", "CHAT");
+        model.addAttribute("printChats", messengerService.findListChatByUser(user));
+        model.addAttribute("active", false);
+
+        if (messengerService.isUserInChat(id, user)) {
+            model.addAttribute("printMessages", messengerService.returnFirst20Messages(id, user));
+            model.addAttribute("active", true);
+            model.addAttribute("chat", messengerService.findChatById(user, id));
+            model.addAttribute("listUserInChat", messengerService.findListUserInChat(id));
+            model.addAttribute("openPopup2", true);
+        }
+
+        return "chat";
     }
 
 }

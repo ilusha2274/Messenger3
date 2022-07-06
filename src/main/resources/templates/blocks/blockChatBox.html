@@ -5,18 +5,25 @@
         <nav>
             <div class="form-search">
                 <div class="chat-name" th:text="${chat.nameChat}"></div>
-<!--                <div class="delete-chat">-->
-<!--                    <svg class="trash-can-icon-naw">-->
-<!--                        <use xlink:href="#trash-can"></use>-->
-<!--                    </svg>-->
-<!--                    <div class="prompt-delete-chat">Удалить чат</div>-->
-<!--                </div>-->
                 <svg class="search-icon">
                     <use xlink:href="#search"></use>
                 </svg>
-                <svg class="more-icon">
-                    <use xlink:href="#more"></use>
-                </svg>
+                <div class="more-icon">
+                    <svg class="more-icon-naw">
+                        <use xlink:href="#more"></use>
+                    </svg>
+                    <div class="prompt-more-icon">
+                        <a class="element-more" th:href="@{/chat/}+${chat.chatId}+@{/addUser}" th:if="${chat.chatType == 'group'}">
+                            Добавить пользователя
+                        </a>
+                        <a class="element-more" style="color:red">
+                            Удалить только у меня
+                        </a>
+                        <a class="element-more" style="color:red">
+                            Удалить у всех
+                        </a>
+                    </div>
+                </div>
             </div>
         </nav>
 

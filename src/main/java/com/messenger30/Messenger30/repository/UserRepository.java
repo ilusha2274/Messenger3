@@ -20,4 +20,6 @@ public interface UserRepository {
     List<PrintFriend> findListFriendsByUser(User user);
 
     boolean isAlreadyFriends(int user1, int user2);
+
+    boolean findUserInChat(User user, int chatID);
 }

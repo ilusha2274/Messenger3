@@ -125,7 +125,7 @@ public class MessengerService implements IMessengerService {
         Chat newChat = chatRepository.addGroupChat(nameChat, user);
 
         for (int id : idFriends) {
-            chatRepository.addUserToGroupChat(id, newChat);
+            chatRepository.addUserToGroupChat(id, newChat.getChatId());
         }
     }
 
@@ -148,6 +148,19 @@ public class MessengerService implements IMessengerService {
         return chat;
     }
 
+    @Override
+    public void addUserInGroupChat(String emailUser, int chatId) {
+        User newUser = userRepository.findUserByEmail(emailUser);
+
+        if (newUser == null)
+            throw new RuntimeException("Пользователь не найден!");
+
+        if (userRepository.findUserInChat(newUser, chatId))
+            throw new RuntimeException("Пользователь уже находится в чате!");
+
+        chatRepository.addUserToGroupChat(newUser.getId(), chatId);
+    }
+
     private void addChat(User user) {
         ArrayList<User> users = new ArrayList<>();
         users.add(user);
@@ -168,7 +181,7 @@ public class MessengerService implements IMessengerService {
             throw new WrongEmailException("Введите email!");
 
         if (user.getName().equals(""))
-            throw new WrongEmailException("Введите имя пользователя!");
+            throw new RuntimeException("Введите имя пользователя!");
 
         if (user.getPassword().equals(""))
             throw new PasswordMismatchException("Пароль не может быть пустым!");

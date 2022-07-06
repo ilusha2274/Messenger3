@@ -12,14 +12,16 @@ function closePopupAddFriend(){
     return
 }
 
-//function openPopupNewGroupChat(){
-//    let popUp= document.getElementById('popup-new-group-chat')
-//    popUp.classList.add('open')
-//    return
-//}
-
 function closePopupNewGroupChat(){
     let popUp= document.getElementById('popup-new-group-chat')
+    popUp.classList.remove('open')
+    return
+}
+
+function closePopupAddUser(){
+    let popUp= document.getElementById('popup-add-user')
+    let exception = document.getElementById('exception-add-user')
+        exception.innerHTML = ''
     popUp.classList.remove('open')
     return
 }

@@ -161,6 +161,11 @@ public class MessengerService implements IMessengerService {
         chatRepository.addUserToGroupChat(newUser.getId(), chatId);
     }
 
+    @Override
+    public void deleteUserInGroupChat (int chatID, int userId){
+        chatRepository.deleteUserInGroupChat(chatID,userId);
+    }
+
     private void addChat(User user) {
         ArrayList<User> users = new ArrayList<>();
         users.add(user);

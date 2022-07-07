@@ -386,6 +386,19 @@ ul {
     fill: #748198;
 }
 
+.trash-user{
+    fill: #fff;
+    cursor: pointer;
+    width:25px;
+    height:25px;
+    margin-right: 10px;
+    opacity: 0.75;
+}
+
+.trash-user:hover{
+    fill: rgba(28, 32, 40, 1.0)
+}
+
 .add-friend-icon{
     width: 30px;
     height: 30px;
@@ -1057,11 +1070,12 @@ ul {
     height: 50px;
     padding-top:10px;
     padding-left:10px;
-    cursor: pointer;
     color: #fff;
     font-family: sans-serif;
     font-size:17px;
     box-sizing: border-box;
+    display:flex;
+    position:relative;
 }
 
 .user-in-chat:hover{
@@ -1084,4 +1098,15 @@ ul {
 
 .input-add-user:focus::placeholder{
     color: #343a46;
+}
+
+.button-delete-user{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    height: 100%;
+    background-color: #232932;
+    position:absolute;
+    right: 0;
+    top: 0;
 }

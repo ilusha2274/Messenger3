@@ -30,7 +30,7 @@ public class AddUserGroupChatController {
             model.addAttribute("active", true);
             model.addAttribute("chat", messengerService.findChatById(user, id));
             model.addAttribute("listUserInChat", messengerService.findListUserInChat(id));
-            model.addAttribute("openPopup2", true);
+            model.addAttribute("openPopupAddUser", true);
         }
 
         return "chat";
@@ -54,10 +54,17 @@ public class AddUserGroupChatController {
             model.addAttribute("active", true);
             model.addAttribute("chat", messengerService.findChatById(user, id));
             model.addAttribute("listUserInChat", messengerService.findListUserInChat(id));
-            model.addAttribute("openPopup2", true);
+            model.addAttribute("openPopupAddUser", true);
         }
 
         return "chat";
+    }
+
+    @PostMapping("chat/{id}/delete/{userID}")
+    public String deleteUserInGroupChat(@PathVariable Integer id, @PathVariable Integer userID, @AuthenticationPrincipal User user) {
+        messengerService.deleteUserInGroupChat(id, userID);
+
+        return "redirect:/chat/" + id + "/addUser";
     }
 
 }

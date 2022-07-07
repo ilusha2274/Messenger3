@@ -34,4 +34,6 @@ public interface ChatRepository {
     List<Message> next20(int chatId, int messageId);
 
     void uploadFileInMessage(String nameFile, int idMessage);
+
+    void deleteUserInGroupChat(int chatID, int userID);
 }

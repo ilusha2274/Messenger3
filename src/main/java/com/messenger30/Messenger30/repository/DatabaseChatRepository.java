@@ -220,4 +220,11 @@ public class DatabaseChatRepository implements ChatRepository {
     public void uploadFileInMessage(String nameFile, int idMessage) {
         jdbcTemplate.update("UPDATE messages SET name_file=? WHERE message_id=?", nameFile, idMessage);
     }
+
+    @Override
+    public void deleteUserInGroupChat(int chatID, int userID) {
+        jdbcTemplate.update("DELETE FROM users_chats " +
+                " WHERE user_id = ? " +
+                " AND chat_id = ? ", userID, chatID);
+    }
 }

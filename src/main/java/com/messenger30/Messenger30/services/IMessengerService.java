@@ -29,4 +29,6 @@ public interface IMessengerService {
     Chat findChatById(User user, int id);
 
     void addUserInGroupChat(String emailUser, int chatId);
+
+    void deleteUserInGroupChat(int chatID, int userId);
 }

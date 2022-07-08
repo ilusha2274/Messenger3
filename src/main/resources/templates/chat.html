@@ -117,35 +117,6 @@
             </div>
         </div>
 
-        <!--popup добавление пользователя в чат-->
-        <div id="popup-add-user" class="popup-add-user" th:classappend="${openPopupAddUser} ? open">
-            <a onclick="closePopupAddUser()" class="popup-area"></a>
-            <div class="popup-body">
-                <div class="popup-new-group-chat__content">
-                    <h1 class="new-friend-text" style="font-size: 20px;">Список пользователей</h1>
-                    <div class="form-new-group-chat" style="height: calc(100% - 140px);background-color:#232932;margin-top:10px;">
-                        <th:block th:each="userInChat : ${listUserInChat}">
-                            <div th:unless="${userInChat.id == user.id}" class="user-in-chat">
-                                <h3 style="width: calc(100% - 35px);" th:text="${userInChat.name}"></h3>
-                                <form method="post" th:action="@{/chat/}+${chat.chatId}+@{/delete/}+${userInChat.id}">
-                                    <button class="button-delete-user">
-                                        <svg class="trash-user">
-                                            <use xlink:href="#trash-can"></use>
-                                        </svg>
-                                    </button>
-                                </form>
-                            </div>
-                        </th:block>
-                    </div>
-                    <h1 class="new-friend-text" style="font-size: 20px;margin-top:10px;">Добавить пользователя</h1>
-                    <form method="post" th:action="@{/chat/}+${chat.chatId}+@{/addUser}" style="width:100%;">
-                        <input name="newUserEmail" class="input-add-user" type="text" placeholder="email пользователя">
-                    </form>
-                    <p id="exception-add-user" class="exception-new-friend" th:text="${exception}"></p>
-                </div>
-            </div>
-        </div>
-
     </div>
 
 

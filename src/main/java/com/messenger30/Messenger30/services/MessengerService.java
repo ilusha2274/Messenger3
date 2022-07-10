@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.util.HtmlUtils;
 
 import java.io.*;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -167,8 +166,18 @@ public class MessengerService implements IMessengerService {
     }
 
     @Override
-    public void deleteUserInGroupChat (int chatID, int userId){
-        chatRepository.deleteUserInGroupChat(chatID,userId);
+    public void deleteUserInGroupChat(int chatID, int userId) {
+        chatRepository.deleteUserInGroupChat(chatID, userId);
+    }
+
+    @Override
+    public void deleteChat(int chatId) {
+        Chat chat = chatRepository.findChatById(chatId);
+
+        if (chat.getChatType().equals("group"))
+            chatRepository.cleanAndDeleteChat(chatId);
+        else
+            chatRepository.cleanChat(chatId);
     }
 
     private void addChat(User user) {
@@ -184,6 +193,14 @@ public class MessengerService implements IMessengerService {
         users.add(user2);
 
         chatRepository.addChat(users, "private");
+    }
+
+    private Chat addChat(int user1, int user2) {
+        List<User> users = new ArrayList<>();
+        users.add(new User(user1));
+        users.add(new User(user2));
+
+        return chatRepository.addChat(users, "private");
     }
 
     private boolean isDataValidation(User user, String twoPassword) {
@@ -306,16 +323,15 @@ public class MessengerService implements IMessengerService {
         return printMessage;
     }
 
-    private List<Chat> sortChatByTime (List<Chat> chats){
+    private List<Chat> sortChatByTime(List<Chat> chats) {
         List<Chat> noTime = new ArrayList<>();
         List<Chat> haveTime = new ArrayList<>();
 
-        for (Chat chat: chats){
-            if (chat.getLocalDateTimeLastMessage() == null){
+        for (Chat chat : chats) {
+            if (chat.getLocalDateTimeLastMessage() == null) {
                 chat.setDateLastMessage("");
                 noTime.add(chat);
-            }
-            else{
+            } else {
                 chat.setDateLastMessage(chat.getLocalDateTimeLastMessage().format(dateTimeFormatterDate));
                 haveTime.add(chat);
             }

@@ -16,10 +16,10 @@
                         <a class="element-more" th:href="@{/chat/}+${chat.chatId}+@{/addUser}" th:if="${chat.chatType == 'group'}">
                             Добавить пользователя
                         </a>
-                        <a class="element-more" style="color:red">
+                        <a class="element-more" style="color:red" th:href="@{/chat/}+${chat.chatId}+@{/delete}">
                             Удалить только у меня
                         </a>
-                        <a class="element-more" style="color:red">
+                        <a class="element-more" style="color:red" th:href="@{/chat/}+${chat.chatId}+@{/deleteAll}" th:if="${chat.chatType != 'saved'}">
                             Удалить у всех
                         </a>
                     </div>

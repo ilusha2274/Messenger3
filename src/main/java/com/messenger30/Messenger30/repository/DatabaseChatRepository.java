@@ -227,4 +227,28 @@ public class DatabaseChatRepository implements ChatRepository {
                 " WHERE user_id = ? " +
                 " AND chat_id = ? ", userID, chatID);
     }
+
+    @Override
+    public void cleanAndDeleteChat(int chatId) {
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
+                jdbcTemplate.update("UPDATE chats SET chat_last_message = null WHERE chat_id = ?", chatId);
+                jdbcTemplate.update("DELETE FROM messages WHERE chat_id = ?", chatId);
+                jdbcTemplate.update("DELETE FROM users_chats WHERE chat_id = ?", chatId);
+                jdbcTemplate.update("DELETE FROM chats WHERE chat_id = ?", chatId);
+            }
+        });
+    }
+
+    @Override
+    public void cleanChat(int chatId) {
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
+                jdbcTemplate.update("UPDATE chats SET chat_last_message = null WHERE chat_id = ?", chatId);
+                jdbcTemplate.update("DELETE FROM messages WHERE chat_id = ?", chatId);
+            }
+        });
+    }
 }

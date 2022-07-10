@@ -36,4 +36,8 @@ public interface ChatRepository {
     void uploadFileInMessage(String nameFile, int idMessage);
 
     void deleteUserInGroupChat(int chatID, int userID);
+
+    void cleanAndDeleteChat(int chatId);
+
+    void cleanChat(int chatId);
 }

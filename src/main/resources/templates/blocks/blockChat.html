@@ -1,7 +1,7 @@
 <div th:fragment="blockChat" xmlns:th="http://www.thymeleaf.org">
 
     <form class="chat-block" method="post">
-        <a th:href="@{/chat/}+${printChat.chatId}" class="chat">
+        <a th:href="@{/chat/}+${printChat.chatId}" class="chat" th:classappend="${printChat.chatId == chatIdActive} ? active">
             <p class="name-chat" th:text="${printChat.nameChat}"></p>
             <p class="last-message" th:text="${printChat.textLastMessage}"></p>
             <p class="date-last-message" th:text="${printChat.dateLastMessage}"></p>

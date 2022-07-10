@@ -791,6 +791,10 @@ ul {
     background-color: #232932;
 }
 
+.chat.active{
+    background-color: #232932;
+}
+
 .last-message{
     padding-bottom:5px;
     display:block;

@@ -40,6 +40,7 @@ public class ChatController {
         model.addAttribute("user", user);
         model.addAttribute("activePage", "CHAT");
         model.addAttribute("active", false);
+        model.addAttribute("chatIdActive", -1);
 
         return "chat";
     }
@@ -55,6 +56,7 @@ public class ChatController {
             model.addAttribute("printMessages", messengerService.returnFirst20Messages(id, user));
             model.addAttribute("active", true);
             model.addAttribute("chat", messengerService.findChatById(user, id));
+            model.addAttribute("chatIdActive", id);
         }
 
         return "chat";

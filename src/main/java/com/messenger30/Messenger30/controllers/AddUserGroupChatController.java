@@ -31,6 +31,7 @@ public class AddUserGroupChatController {
             model.addAttribute("chat", messengerService.findChatById(user, id));
             model.addAttribute("listUserInChat", messengerService.findListUserInChat(id));
             model.addAttribute("openPopupAddUser", true);
+            model.addAttribute("chatIdActive", id);
         }
 
         return "chat";
@@ -55,6 +56,7 @@ public class AddUserGroupChatController {
             model.addAttribute("chat", messengerService.findChatById(user, id));
             model.addAttribute("listUserInChat", messengerService.findListUserInChat(id));
             model.addAttribute("openPopupAddUser", true);
+            model.addAttribute("chatIdActive", id);
         }
 
         return "chat";

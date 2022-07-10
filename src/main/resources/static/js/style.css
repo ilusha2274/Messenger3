@@ -364,12 +364,12 @@ ul {
     right: 15px;
     width: 20px;
     height: 20px;
-    fill: #748198;
+    fill: #fff;
     cursor: pointer;
 }
 
 .trash-can-icon:hover{
-    fill: rgba(28, 32, 40, 1.0);
+    opacity: 0.4;
 }
 
 .trash-can-icon-naw{

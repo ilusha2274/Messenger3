@@ -117,4 +117,11 @@ public class DatabaseUserRepository implements UserRepository, UserDetailsServic
 
         return res > 0;
     }
+
+    @Override
+    public void deleteFriend(int idUser1, int idUser2) {
+        jdbcTemplate.update("DELETE FROM users_users " +
+                " WHERE user1_id = ? " +
+                " AND user2_id = ?", idUser1, idUser2);
+    }
 }

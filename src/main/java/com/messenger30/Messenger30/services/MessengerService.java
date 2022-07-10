@@ -180,6 +180,11 @@ public class MessengerService implements IMessengerService {
             chatRepository.cleanChat(chatId);
     }
 
+    @Override
+    public void deleteFriend(int idUser1, int idUser2) {
+        userRepository.deleteFriend(idUser1, idUser2);
+    }
+
     private void addChat(User user) {
         ArrayList<User> users = new ArrayList<>();
         users.add(user);

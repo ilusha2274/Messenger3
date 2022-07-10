@@ -22,4 +22,6 @@ public interface UserRepository {
     boolean isAlreadyFriends(int user1, int user2);
 
     boolean findUserInChat(User user, int chatID);
+
+    void deleteFriend(int idUser1, int idUser2);
 }

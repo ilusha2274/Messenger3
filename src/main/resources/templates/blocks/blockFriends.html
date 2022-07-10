@@ -1,13 +1,15 @@
 <div th:fragment="blockFriends" xmlns:th="http://www.thymeleaf.org">
 
-    <form class="friend-block" method="post">
+    <div class="friend-block">
         <a th:href="@{/chat/}+${printFriend.chatId}" class="friend">
             <p th:text="${printFriend.nameFriend}"></p>
-            <svg class="trash-can-icon">
-                <use xlink:href="#trash-can"></use>
-            </svg>
+            <a th:href="@{/deleteFriend/}+${printFriend.idUser2}">
+                <svg class="trash-can-icon">
+                    <use xlink:href="#trash-can"></use>
+                </svg>
+            </a>
         </a>
-    </form>
+    </div>
     <hr style="margin: 0; padding-left: 5px; padding-right: 5px;">
 
 </div>

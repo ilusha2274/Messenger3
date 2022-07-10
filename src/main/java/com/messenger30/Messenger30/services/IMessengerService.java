@@ -33,4 +33,6 @@ public interface IMessengerService {
     void deleteUserInGroupChat(int chatID, int userId);
 
     void deleteChat(int chatId);
+
+    void deleteFriend(int idUser1, int idUser2);
 }

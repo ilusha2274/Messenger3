@@ -17,8 +17,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.util.HtmlUtils;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MessengerService implements IMessengerService {
 
@@ -75,7 +78,9 @@ public class MessengerService implements IMessengerService {
 
     @Override
     public List<Chat> findListChatByUser(User user) {
-        return chatRepository.findListChatByUser(user);
+        List<Chat> chats = chatRepository.findListChatByUser(user);
+
+        return sortChatByTime(chats);
     }
 
     @Override
@@ -299,5 +304,32 @@ public class MessengerService implements IMessengerService {
         }
 
         return printMessage;
+    }
+
+    private List<Chat> sortChatByTime (List<Chat> chats){
+        List<Chat> noTime = new ArrayList<>();
+        List<Chat> haveTime = new ArrayList<>();
+
+        for (Chat chat: chats){
+            if (chat.getLocalDateTimeLastMessage() == null){
+                chat.setDateLastMessage("");
+                noTime.add(chat);
+            }
+            else{
+                chat.setDateLastMessage(chat.getLocalDateTimeLastMessage().format(dateTimeFormatterDate));
+                haveTime.add(chat);
+            }
+        }
+
+        haveTime = haveTime.stream()
+                .sorted((o1, o2) -> (int) (o2.getLocalDateTimeLastMessage().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() -
+                        o1.getLocalDateTimeLastMessage().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()))
+                .collect(Collectors.toList());
+
+        List<Chat> res = new ArrayList<>();
+        res.addAll(haveTime);
+        res.addAll(noTime);
+
+        return res;
     }
 }

@@ -16,12 +16,11 @@ public class PrintChatMapper implements RowMapper<Chat> {
     @Override
     public Chat mapRow(ResultSet resultSet, int i) throws SQLException {
         Chat chat = new Chat(resultSet.getString("chatname"),
-                resultSet.getInt("chat_id"), "", "");
+                resultSet.getInt("chat_id"), null, "");
 
         if (resultSet.getString("text_message") != null) {
-            LocalDateTime localDateTime = resultSet.getTimestamp("date_message").toLocalDateTime();
             chat.setTextLastMessage(resultSet.getString("text_message"));
-            chat.setDateLastMessage(localDateTime.format(dateTimeFormatterDate));
+            chat.setLocalDateTimeLastMessage(resultSet.getTimestamp("date_message").toLocalDateTime());
         }
 
         return chat;

@@ -1,5 +1,6 @@
 package com.messenger30.Messenger30.domain;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ public class Chat {
     private List<User> users = new ArrayList<>();
     private Message lastMessage;
     private String nameChat;
+    private LocalDateTime localDateTimeLastMessage;
     private String dateLastMessage;
     private String textLastMessage;
     private String chatType;
@@ -16,10 +18,10 @@ public class Chat {
     public Chat() {
     }
 
-    public Chat(String nameChat, int chatId, String dateLastMessage, String textLastMessage) {
+    public Chat(String nameChat, int chatId, LocalDateTime localDateTimeLastMessage, String textLastMessage) {
         this.nameChat = nameChat;
         this.chatId = chatId;
-        this.dateLastMessage = dateLastMessage;
+        this.localDateTimeLastMessage = localDateTimeLastMessage;
         this.textLastMessage = textLastMessage;
     }
 
@@ -29,6 +31,14 @@ public class Chat {
         this.chatType = chatType;
     }
 
+
+    public LocalDateTime getLocalDateTimeLastMessage() {
+        return localDateTimeLastMessage;
+    }
+
+    public void setLocalDateTimeLastMessage(LocalDateTime localDateTimeLastMessage) {
+        this.localDateTimeLastMessage = localDateTimeLastMessage;
+    }
 
     public String getDateLastMessage() {
         return dateLastMessage;

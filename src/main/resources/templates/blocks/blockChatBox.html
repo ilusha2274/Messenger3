@@ -70,7 +70,7 @@
                     <th:block th:each="userInChat : ${listUserInChat}">
                         <div th:unless="${userInChat.id == user.id}" class="user-in-chat">
                             <h3 style="width: calc(100% - 35px);" th:text="${userInChat.name}"></h3>
-                            <form method="post" th:action="@{/chat/}+${chat.chatId}+@{/delete/}+${userInChat.id}">
+                            <form method="POST" th:action="@{/chat/}+${chat.chatId}+@{/delete/}+${userInChat.id}">
                                 <button class="button-delete-user">
                                     <svg class="trash-user">
                                         <use xlink:href="#trash-can"></use>

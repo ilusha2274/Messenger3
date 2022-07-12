@@ -53,7 +53,7 @@ public class ChatController {
         model.addAttribute("active", false);
 
         if (messengerService.isUserInChat(id, user)) {
-            model.addAttribute("printMessages", messengerService.returnFirst20Messages(id, user));
+            model.addAttribute("printMessages", messengerService.returnFirst30Messages(id, user));
             model.addAttribute("active", true);
             model.addAttribute("chat", messengerService.findChatById(user, id));
             model.addAttribute("chatIdActive", id);
@@ -66,7 +66,7 @@ public class ChatController {
     @ResponseBody
     public Collection<PrintMessage> printNext20messages(@AuthenticationPrincipal User user, @PathVariable Integer id, @PathVariable Integer messageId) {
 
-        return messengerService.returnNext20Messages(id, messageId, user);
+        return messengerService.returnNext30Messages(id, messageId, user);
     }
 
     @MessageMapping("/chat/{id}")

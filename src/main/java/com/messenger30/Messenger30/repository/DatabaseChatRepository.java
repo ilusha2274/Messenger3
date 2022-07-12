@@ -199,23 +199,23 @@ public class DatabaseChatRepository implements ChatRepository {
     }
 
     @Override
-    public List<Message> findFirst20(int chatId) {
+    public List<Message> findFirst30(int chatId) {
 
         return jdbcTemplate.query(" SELECT messages.date_message, messages.user_id, messages.text_message, users.user_name, messages.message_id, messages.name_file " +
                 " FROM messages " +
                 " JOIN users " +
                 " ON messages.user_id = users.user_id " +
-                " WHERE chat_id=? ORDER BY message_id DESC LIMIT 20 ", new MessageMapper(), chatId);
+                " WHERE chat_id=? ORDER BY message_id DESC LIMIT 30 ", new MessageMapper(), chatId);
     }
 
     @Override
-    public List<Message> next20(int chatId, int messageId) {
+    public List<Message> next30(int chatId, int messageId) {
 
         return jdbcTemplate.query(" SELECT messages.date_message, messages.user_id, messages.text_message, users.user_name, messages.message_id, messages.name_file " +
                 " FROM messages " +
                 " JOIN users " +
                 " ON messages.user_id = users.user_id " +
-                " WHERE chat_id=? AND message_id < ? ORDER BY message_id DESC LIMIT 20 ", new MessageMapper(), chatId, messageId);
+                " WHERE chat_id=? AND message_id < ? ORDER BY message_id DESC LIMIT 30 ", new MessageMapper(), chatId, messageId);
     }
 
     @Override

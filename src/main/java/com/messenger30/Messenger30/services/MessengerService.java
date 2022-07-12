@@ -98,15 +98,15 @@ public class MessengerService implements IMessengerService {
     }
 
     @Override
-    public List<PrintMessage> returnFirst20Messages(int chatId, User user) {
-        List<Message> messages = chatRepository.findFirst20(chatId);
+    public List<PrintMessage> returnFirst30Messages(int chatId, User user) {
+        List<Message> messages = chatRepository.findFirst30(chatId);
 
         return printMessages(messages, user);
     }
 
     @Override
-    public List<PrintMessage> returnNext20Messages(int chatID, int messageId, User user) {
-        List<Message> messages = chatRepository.next20(chatID, messageId);
+    public List<PrintMessage> returnNext30Messages(int chatID, int messageId, User user) {
+        List<Message> messages = chatRepository.next30(chatID, messageId);
 
         return printMessages(messages, user);
     }

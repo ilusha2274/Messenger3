@@ -20,9 +20,9 @@ public interface IMessengerService {
 
     boolean isUserInChat(int chatId, User user);
 
-    List<PrintMessage> returnFirst20Messages(int chatId, User user);
+    List<PrintMessage> returnFirst30Messages(int chatId, User user);
 
-    List<PrintMessage> returnNext20Messages(int chatID, int messageId, User user);
+    List<PrintMessage> returnNext30Messages(int chatID, int messageId, User user);
 
     void addMessageToChat(ChatMessage chatMessage, User user);
 

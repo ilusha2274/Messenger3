@@ -29,9 +29,9 @@ public interface ChatRepository {
 
     List<User> findListUserInChat(int chatID);
 
-    List<Message> findFirst20(int chatId);
+    List<Message> findFirst30(int chatId);
 
-    List<Message> next20(int chatId, int messageId);
+    List<Message> next30(int chatId, int messageId);
 
     void uploadFileInMessage(String nameFile, int idMessage);
 

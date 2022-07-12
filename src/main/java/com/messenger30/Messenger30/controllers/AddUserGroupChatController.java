@@ -26,7 +26,7 @@ public class AddUserGroupChatController {
         model.addAttribute("active", false);
 
         if (messengerService.isUserInChat(id, user)) {
-            model.addAttribute("printMessages", messengerService.returnFirst20Messages(id, user));
+            model.addAttribute("printMessages", messengerService.returnFirst30Messages(id, user));
             model.addAttribute("active", true);
             model.addAttribute("chat", messengerService.findChatById(user, id));
             model.addAttribute("listUserInChat", messengerService.findListUserInChat(id));
@@ -51,7 +51,7 @@ public class AddUserGroupChatController {
         model.addAttribute("active", false);
 
         if (messengerService.isUserInChat(id, user)) {
-            model.addAttribute("printMessages", messengerService.returnFirst20Messages(id, user));
+            model.addAttribute("printMessages", messengerService.returnFirst30Messages(id, user));
             model.addAttribute("active", true);
             model.addAttribute("chat", messengerService.findChatById(user, id));
             model.addAttribute("listUserInChat", messengerService.findListUserInChat(id));

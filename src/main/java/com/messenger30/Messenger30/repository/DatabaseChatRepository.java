@@ -189,10 +189,12 @@ public class DatabaseChatRepository implements ChatRepository {
     @Override
     public List<User> findListUserInChat(int chatID) {
 
-        return jdbcTemplate.query(" SELECT users.user_id, users.user_name, users.user_email, users.user_password, users.enabled " +
+        return jdbcTemplate.query(" SELECT users.user_id, users.user_name, users.user_email, users.user_password, users.enabled, role.role " +
                 " FROM users_chats " +
                 " JOIN users " +
                 " ON users_chats.user_id = users.user_id " +
+                " JOIN role " +
+                " ON role.user_id = users.user_id " +
                 " WHERE users_chats.chat_id = ? ", new UserMapper(), chatID);
     }
 

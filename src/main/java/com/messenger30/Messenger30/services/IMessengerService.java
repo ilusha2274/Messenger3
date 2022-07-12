@@ -6,6 +6,10 @@ import java.util.List;
 
 public interface IMessengerService {
 
+    List<User> getAllUsers();
+
+    User findUserByEmail(String email);
+
     void addNewFriend(User user, String emailUser2);
 
     List<PrintFriend> findListFriendsByUser(User user);
@@ -35,4 +39,12 @@ public interface IMessengerService {
     void deleteChat(int chatId);
 
     void deleteFriend(int idUser1, int idUser2);
+
+    void makeUser(int userId);
+
+    void makeAdmin(int userId);
+
+    void ban(int userId);
+
+    void unBan(int userId);
 }

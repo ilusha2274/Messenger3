@@ -1,8 +1,6 @@
 package com.messenger30.Messenger30.controllers;
 
 import com.messenger30.Messenger30.domain.User;
-import com.messenger30.Messenger30.exceptions.PasswordMismatchException;
-import com.messenger30.Messenger30.exceptions.WrongEmailException;
 import com.messenger30.Messenger30.services.IMessengerService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

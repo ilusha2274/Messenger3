@@ -30,6 +30,14 @@ public class DatabaseUserRepository implements UserRepository, UserDetailsServic
 //        return jdbcTemplate.query("SELECT * FROM users", new UserMapper());
 //    }
 
+
+    @Override
+    public List<User> getAllUsers() {
+        return jdbcTemplate.query("SELECT * FROM users " +
+                " JOIN role " +
+                " ON users.user_id = role.user_id ", new UserMapper());
+    }
+
     @Override
     public User addUser(User user) {
 
@@ -60,20 +68,25 @@ public class DatabaseUserRepository implements UserRepository, UserDetailsServic
     @Override
     public User findUserByEmail(String email) {
 
-        return jdbcTemplate.query("SELECT * FROM users WHERE user_email=?", new Object[]{email},
+        return jdbcTemplate.query("SELECT * FROM users" +
+                        " JOIN role " +
+                        " ON role.user_id = users.user_id " +
+                        " WHERE user_email=?", new Object[]{email},
                 new UserMapper()).stream().findAny().orElse(null);
     }
 
     @Override
     public User findUserById(int id) {
 
-        return jdbcTemplate.query("SELECT * FROM users WHERE user_id=?", new Object[]{id},
+        return jdbcTemplate.query("SELECT * FROM users " +
+                        " JOIN role " +
+                        " ON role.user_id = users.user_id " +
+                        " WHERE users.user_id=?", new Object[]{id},
                 new UserMapper()).stream().findAny().orElse(null);
     }
 
     @Override
     public User loadUserByUsername(String s) throws UsernameNotFoundException {
-
         return findUserByEmail(s);
     }
 
@@ -123,5 +136,25 @@ public class DatabaseUserRepository implements UserRepository, UserDetailsServic
         jdbcTemplate.update("DELETE FROM users_users " +
                 " WHERE user1_id = ? " +
                 " AND user2_id = ?", idUser1, idUser2);
+    }
+
+    @Override
+    public void makeUser(int userId) {
+        jdbcTemplate.update("UPDATE role SET role = 'ROLE_USER' WHERE user_id = ?", userId);
+    }
+
+    @Override
+    public void makeAdmin(int userId) {
+        jdbcTemplate.update("UPDATE role SET role = 'ROLE_ADMIN' WHERE user_id = ?", userId);
+    }
+
+    @Override
+    public void ban(int userId) {
+        jdbcTemplate.update("UPDATE users SET enabled = false WHERE user_id = ?", userId);
+    }
+
+    @Override
+    public void unBan(int userId) {
+        jdbcTemplate.update("UPDATE users SET enabled = true WHERE user_id = ?", userId);
     }
 }

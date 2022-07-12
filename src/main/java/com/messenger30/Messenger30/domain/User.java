@@ -1,13 +1,12 @@
 package com.messenger30.Messenger30.domain;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class User implements UserDetails {
     private Integer id;
@@ -36,8 +35,6 @@ public class User implements UserDetails {
 
     public User() {
     }
-
-    private static final String ROLE_USER = "USER";
 
     private List<Chat> chats = new ArrayList<>();
 
@@ -93,9 +90,11 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(ROLE_USER));
+    public Set<SimpleGrantedAuthority> getAuthorities() {
+        Set<SimpleGrantedAuthority> simpleGrantedAuthorities = new HashSet<>();
+        simpleGrantedAuthorities.add(new SimpleGrantedAuthority(role));
+
+        return simpleGrantedAuthorities;
     }
 
     @Override
@@ -105,16 +104,16 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return isEnabled();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isEnabled();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return isEnabled();
     }
 }

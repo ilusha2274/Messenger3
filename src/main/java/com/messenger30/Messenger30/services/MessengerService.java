@@ -43,6 +43,16 @@ public class MessengerService implements IMessengerService {
     }
 
     @Override
+    public List<User> getAllUsers() {
+        return userRepository.getAllUsers();
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
     public void addNewFriend(User user, String emailUser2) {
         User user2 = userRepository.findUserByEmail(emailUser2);
 
@@ -183,6 +193,26 @@ public class MessengerService implements IMessengerService {
     @Override
     public void deleteFriend(int idUser1, int idUser2) {
         userRepository.deleteFriend(idUser1, idUser2);
+    }
+
+    @Override
+    public void makeUser(int userId) {
+        userRepository.makeUser(userId);
+    }
+
+    @Override
+    public void makeAdmin(int userId) {
+        userRepository.makeAdmin(userId);
+    }
+
+    @Override
+    public void ban(int userId) {
+        userRepository.ban(userId);
+    }
+
+    @Override
+    public void unBan(int userId) {
+        userRepository.unBan(userId);
     }
 
     private void addChat(User user) {

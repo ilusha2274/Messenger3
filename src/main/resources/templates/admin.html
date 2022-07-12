@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Messenger</title>
+    <link rel="stylesheet" href="/static/js/style.css">
+</head>
+
+<body>
+
+<!--Картинки-->
+<svg display="none">
+
+    <symbol id="more" viewBox="0 0 24 24">
+        <g>
+            <path d="M8 12C8 13.1046 7.10457 14 6 14C4.89543 14 4 13.1046 4 12C4 10.8954 4.89543 10 6 10C7.10457 10 8 10.8954 8 12Z" /><path d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" /><path d="M18 14C19.1046 14 20 13.1046 20 12C20 10.8954 19.1046 10 18 10C16.8954 10 16 10.8954 16 12C16 13.1046 16.8954 14 18 14Z" />
+        </g>
+    </symbol>
+
+</svg>
+
+<div class="main">
+    <div class="block-menu-border">
+        <blockMenu th:include="blocks/blockMenu :: blockMenu"></blockMenu>
+    </div>
+
+    <div class="friend-menu-border">
+        <div class="friend-menu">
+            <nav>
+                <div class="form-search">
+                    <div class="chat-name">Admins</div>
+                    <input class="input-search" placeholder="Search">
+                </div>
+            </nav>
+
+            <hr>
+
+            <div class="friends-box">
+
+                <tr th:each="admin : ${listAdmins}">
+                    <div class="friend-block">
+                        <div class="friend">
+                            <p th:text="${admin.name}"></p>
+                            <div class="more-icon">
+                                <svg class="more-icon-naw" style="fill: #748198;">
+                                    <use xlink:href="#more"></use>
+                                </svg>
+                                <div class="prompt-more-icon">
+                                    <a class="element-more" style="padding-top: 0;" th:href="@{/admin/makeUser/} + ${admin.id}">Изменить на User</a>
+                                    <a class="element-more" th:href="@{/admin/ban/} + ${admin.id}" style="color:red;padding-top: 0;">Заблокировать</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="margin: 0; padding-left: 5px; padding-right: 5px;">
+                </tr>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="friend-menu-border">
+        <div class="friend-menu">
+            <nav>
+                <div class="form-search">
+                    <div class="chat-name">Users</div>
+                    <input class="input-search" placeholder="Search">
+                </div>
+            </nav>
+
+            <hr>
+
+            <div class="friends-box">
+
+                <tr th:each="lUser : ${listUsers}">
+                    <div class="friend-block">
+                        <div class="friend">
+                            <p th:text="${lUser.name}"></p>
+
+                            <div class="more-icon">
+                                <svg class="more-icon-naw" style="fill: #748198;">
+                                    <use xlink:href="#more"></use>
+                                </svg>
+                                <div class="prompt-more-icon">
+                                    <a class="element-more" style="padding-top: 0;" th:href="@{/admin/makeAdmin/} + ${lUser.id}">Изменить на Admin</a>
+                                    <a class="element-more" th:href="@{/admin/ban/} + ${lUser.id}" style="color:red;padding-top: 0;">Заблокировать</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="margin: 0; padding-left: 5px; padding-right: 5px;">
+                </tr>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="friend-menu-border">
+        <div class="friend-menu">
+            <nav>
+                <div class="form-search">
+                    <div class="chat-name">Blocked Users</div>
+                    <input class="input-search" placeholder="Search">
+                </div>
+            </nav>
+
+            <hr>
+
+            <div class="friends-box">
+
+                <tr th:each="banned : ${listBanned}">
+                    <div class="friend-block">
+                        <div class="friend">
+                            <p th:text="${banned.name}"></p>
+
+                            <div class="more-icon">
+                                <svg class="more-icon-naw" style="fill: #748198;">
+                                    <use xlink:href="#more"></use>
+                                </svg>
+                                <div class="prompt-more-icon">
+                                    <a class="element-more" th:href="@{/admin/unBan/} + ${banned.id}" style="color:red;padding-top: 0;">Разблокировать</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="margin: 0; padding-left: 5px; padding-right: 5px;">
+                </tr>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>

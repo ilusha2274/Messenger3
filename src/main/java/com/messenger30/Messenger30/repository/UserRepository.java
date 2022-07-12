@@ -7,6 +7,8 @@ import java.util.List;
 
 
 public interface UserRepository {
+    List<User> getAllUsers();
+
     User addUser(User user);
 
     void removeUserByEmail(String email);
@@ -24,4 +26,12 @@ public interface UserRepository {
     boolean findUserInChat(User user, int chatID);
 
     void deleteFriend(int idUser1, int idUser2);
+
+    void makeUser(int userId);
+
+    void makeAdmin(int userId);
+
+    void ban(int userId);
+
+    void unBan(int userId);
 }

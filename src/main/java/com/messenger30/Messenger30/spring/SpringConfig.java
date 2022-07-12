@@ -2,7 +2,10 @@ package com.messenger30.Messenger30.spring;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.messenger30.Messenger30.repository.*;
+import com.messenger30.Messenger30.repository.ChatRepository;
+import com.messenger30.Messenger30.repository.DatabaseChatRepository;
+import com.messenger30.Messenger30.repository.DatabaseUserRepository;
+import com.messenger30.Messenger30.repository.UserRepository;
 import com.messenger30.Messenger30.services.IMessengerService;
 import com.messenger30.Messenger30.services.MessengerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,30 +75,6 @@ public class SpringConfig implements WebMvcConfigurer {
     public IMessengerService messengerService(ChatRepository chatRepository, UserRepository userRepository, AWSCredentials credentials) {
         return new MessengerService(chatRepository, userRepository, credentials);
     }
-
-//    @Bean
-//    public SpringResourceTemplateResolver templateResolver() {
-//        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-//        templateResolver.setApplicationContext(applicationContext);
-//        templateResolver.setPrefix("/resources/templates/");
-//        templateResolver.setSuffix(".html");
-//        return templateResolver;
-//    }
-
-//    @Bean
-//    public SpringTemplateEngine templateEngine() {
-//        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-//        templateEngine.setTemplateResolver(templateResolver());
-//        templateEngine.setEnableSpringELCompiler(true);
-//        return templateEngine;
-//    }
-
-//    @Override
-//    public void configureViewResolvers(ViewResolverRegistry registry) {
-//        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-//        resolver.setTemplateEngine(templateEngine());
-//        registry.viewResolver(resolver);
-//    }
 
     @Bean
     public DataSource dataSource() {

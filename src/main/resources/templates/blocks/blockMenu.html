@@ -9,6 +9,9 @@
                 <a href="/friends" th:class="${activePage == 'FRIENDS'} ? header-active : header">Friends</a>
                 <a href="/chat" th:class="${activePage == 'CHAT'} ? header-active : header">Chat</a>
                 <a href="/settings" th:class="${activePage == 'SETTINGS'} ? header-active : header">Settings</a>
+                <div th:if="${user.role == 'ROLE_ADMIN'}">
+                    <a href="/admin" th:class="${activePage == 'ADMIN'} ? header-active : header">Admin</a>
+                </div>
                 <a href="/exit" class="header">exit</a>
         </div>
         <hr>

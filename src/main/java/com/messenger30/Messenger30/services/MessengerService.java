@@ -259,7 +259,7 @@ public class MessengerService implements IMessengerService {
 
     private void uploadFile(ChatMessage chatMessage, int id) {
         String urlFile = chatMessage.getNameFile().replaceAll("data:image/png;base64,", "");
-        urlFile = chatMessage.getNameFile().replaceAll("data:image/jpeg;base64,", "");
+        urlFile = urlFile.replaceAll("data:image/jpeg;base64,", "");
         InputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(urlFile));
         ObjectMetadata metadata = null;
         String nameFile = stringGeneration();

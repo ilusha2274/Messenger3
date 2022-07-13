@@ -942,6 +942,7 @@ ul {
     font-size: 17px;
     color: #fff;
     overflow-wrap: break-word;
+    min-height:20px;
 }
 
 .receiver-message-date{

@@ -3,6 +3,7 @@ let arr = null;
 let messageId = null;
 let scrollEvent = true;
 let files = [];
+let canSend = true;
 const preview = document.createElement('div');
 
 preview.classList.add('preview');
@@ -31,8 +32,7 @@ const removeHandler = event =>{
     const {name} = event.target.dataset
     files = files.filter(file => file.name !== name)
 
-    const block = preview.querySelector(`[data-name="${name}"]`).closest('.preview-image')
-    block.remove()
+    preview.remove()
 }
 
 const changeHandler = event => {
@@ -53,7 +53,7 @@ const changeHandler = event => {
         preview.insertAdjacentHTML('afterbegin', `
             <div class="preview-image">
             <div class="preview-remove"  data-name="${files[0].name}">&times;</div>
-                <img style="width: auto; height: 70px" src="${src}"/>
+                <img style="width: auto; height: 45px" src="${src}"/>
                 <div class="preview-info" style="height: 25px; position: absolute;bottom: 0;font-size: .8rem;background: rgba(255, 255, 255, .5);display: flex;align-items: center;justify-content: space-between;padding: 0 5px;">
                     ${bytesToSize(files[0].size)}
                 </div>
@@ -75,7 +75,8 @@ function bytesToSize(bytes) {
 $(document).keydown(function(e){
     $('#message').keydown(function(e){
         let messageContent = document.querySelector('#message');
-        if(e.which == 13 && messageContent.value != ''){
+        if(e.which == 13 && messageContent.value != '' && canSend || e.which == 13 && files[0] != null && canSend){
+           canSend = false;
            sendMessage();
         }
     });
@@ -166,6 +167,15 @@ function sendMessage() {
         showMessageAuthor(chatMessage);
         stompClient.send("/ws/chat/" + chatID.value, {}, JSON.stringify(chatMessage));
         console.log('Got post message: ' + messageContent.value );
+    }
+
+    canSend = true;
+    files[0] = null
+
+    let block = document.getElementsByClassName('preview')
+
+    while(block[0]) {
+        block[0].parentNode.removeChild(block[0]);
     }
 }
 

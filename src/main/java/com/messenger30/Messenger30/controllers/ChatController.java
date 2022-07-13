@@ -88,6 +88,8 @@ public class ChatController {
 
     @GetMapping("/chat/{id}/delete")
     public String deleteChatByUser(Model model, @AuthenticationPrincipal User user, @PathVariable Integer id) {
+        messengerService.deleteChat(id);
+
         return "redirect:/chat";
     }
 
